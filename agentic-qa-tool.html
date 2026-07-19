@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teaching an Agent to Run a Mock Interview — Eric Salerno</title>
+<meta name="description" content="Case study: building a live, agent-reviewed mock-interview tool with Claude Code — and the corrections along the way that turned into a reusable skill.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Teaching an Agent to Run a Mock Interview">
+<meta property="og:description" content="Case study: building a live, agent-reviewed mock-interview tool with Claude Code — and the corrections along the way that turned into a reusable skill.">
+<meta property="og:url" content="https://ericthebigsal.github.io/agentic-qa-tool.html">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="case-study">
+<header class="site-header">
+  <p class="breadcrumb"><a href="index.html">&larr; Eric Salerno</a></p>
+  <h1>Teaching an Agent to Run a Mock Interview</h1>
+  <p class="headline">A 0&rarr;1 tool built live with Claude Code, corrected in the open</p>
+  <p class="tagline">What started as "help me prep some interview answers" became a persisted, live-updating mock-interview tool with its own review workflow — and, once that workflow proved itself, its own reusable Claude Code skill.</p>
+  <ul class="case-tags">
+    <li>Claude Code</li>
+    <li>FastAPI + SQLite</li>
+    <li>Agent skill authoring</li>
+    <li>Vanilla JS, no framework</li>
+  </ul>
+</header>
+
+<main>
+  <section id="context" aria-labelledby="context-heading">
+    <h2 id="context-heading">The problem</h2>
+    <p>I was prepping for a platform-team leadership interview — the kind where the hiring manager tests whether you actually understand platform tradeoffs, not just whether you can recite a résumé. I'd already done deep research on the company and had a solid written interview-prep doc. It wasn't enough. Reading predicted questions off a page isn't the same as being asked them, and a static document can't react to what you actually say.</p>
+    <p>So I asked Claude Code to build something better: a tool where I write real answers, and Claude reviews them the way an actual interviewer would react — reads what I said, reacts to it specifically, and either signs off or pushes back.</p>
+    <p><strong>The details below are genericized</strong> — this was built for a real, active interview process, so the specific company, role, and interview content aren't reproduced here. What's real is the build: every correction, bug, and design decision described happened exactly as written.</p>
+  </section>
+
+  <section id="build" aria-labelledby="build-heading">
+    <h2 id="build-heading">Building it, in the open</h2>
+    <p>The interesting part isn't the finished tool — it's the sequence of corrections that got it there. Several of these were me catching Claude's mistake; a couple were Claude catching its own.</p>
+
+    <div class="moment">
+      <span class="beat">Moment 1 — the trust reset</span>
+      <h3>A fun prototype, and the wrong instinct</h3>
+      <p>First pass: an interactive "predicted questions" tree with sample answers written in, so the UI had something to show. It looked great. It was also a problem — the sample answers were invented, dressed up to sound plausible, and nothing marked them as fabricated.</p>
+      <blockquote class="pull">"Where did you come up with those answers?" — the question that ended that approach.</blockquote>
+      <p>The fix wasn't cosmetic. Every invented answer got stripped out and replaced with an empty text box. The standing rule from that point forward: Claude writes the <em>questions</em> (predictions of what an interviewer might ask — clearly Claude's own analysis), but never the <em>answers</em>. Those are real or they don't exist.</p>
+    </div>
+
+    <div class="moment">
+      <span class="beat">Moment 2 — making it real</span>
+      <h3>From a static page to a persisted workflow</h3>
+      <p>Once answers had to be genuinely mine, the tool needed real state: a SQLite-backed FastAPI service tracking each question's raw answer, Claude's cleaned-up version, review status, and a full feedback history — not just current state, an append-only log, since the correction trail turned out to matter as much as the final answer.</p>
+      <p>Every cleaned-up version starts as a <strong>draft</strong>. Nothing is final until I approve it. "Request changes" reopens it with my actual feedback attached, which Claude reads and revises against — a real edit loop, not a one-shot rewrite.</p>
+    </div>
+
+    <div class="moment">
+      <span class="beat">Moment 3 — making it feel alive</span>
+      <h3>Live status instead of a silent black box</h3>
+      <p>Early on, saving an answer and asking Claude to review it meant switching to a chat window and waiting, with no signal in the tool itself that anything was happening. Two additions fixed that: a background watcher (Claude Code's <code>Monitor</code> tool, polling the database) that notifies Claude the moment a new answer lands, and a "claim" step Claude calls immediately on picking it up — before the actual review is even written — so the page shows a live "reviewing now" state within seconds. The page itself polls and re-renders automatically; no manual refresh, ever.</p>
+    </div>
+
+    <div class="moment">
+      <span class="beat">Moment 4 — a structural bug</span>
+      <h3>Question 2 was already answered by Question 1</h3>
+      <p>The tool originally let the next planned question stay visible while a deep follow-up thread on the current question was still open. In practice, that meant a later question sometimes got answered by accident, mid-conversation, on an earlier one — leaving it redundant by the time it was actually reached. The fix: a question only unlocks once its <em>entire</em> follow-up thread is answered, and once that happens, Claude re-reads everything said so far and rewrites or cuts whatever's next if it's already been covered — rather than mechanically asking a question that's already been answered.</p>
+    </div>
+
+    <div class="moment">
+      <span class="beat">Moment 5 — inverting the interview</span>
+      <h3>"Instead of pills, choose the question"</h3>
+      <p>The tool's early design offered multiple candidate follow-up questions as clickable options — pick which direction to explore next. It was a UX pattern borrowed from a completely different kind of tool, and it quietly broke the premise: a real interviewer doesn't hand you a menu of which hard question you'd like to answer. Claude now picks the single most likely next question itself, using judgment about how the conversation would actually flow, and keeps the alternatives on file to revisit later rather than surfacing them as a choice.</p>
+    </div>
+
+    <div class="moment">
+      <span class="beat">Moment 6 — catching itself</span>
+      <h3>Specific isn't the same as substantiated</h3>
+      <p>This is the one Claude caught wrong on its own initiative being questioned, not proactively. Reviewing an answer that had good procedural detail — real specifics about process and people involved — but whose actual core claim boiled down to an unsupported "the two things were just too different to unify," Claude praised it as "strong and specific" anyway. Called on it directly, the honest answer was: no, that claim should have triggered a follow-up, and didn't, because surrounding detail elsewhere in the same answer made the whole thing <em>feel</em> substantiated without actually checking the one sentence the whole conclusion rested on.</p>
+      <p>The fix went into the review process itself: certain words — "complicated," "different," "aligned," "the right call" — now trigger an explicit check, every time, regardless of how solid the rest of the answer reads.</p>
+    </div>
+
+    <div class="moment">
+      <span class="beat">Moment 7 — scaling the interface</span>
+      <h3>From one long scroll to Miller columns</h3>
+      <p>As review threads got several questions deep, a single scrolling page stopped being usable. The fix borrowed a pattern from a companion tool in the same project (a research-notes dashboard already using Miller columns): sections in the first column, that section's question sequence in the second, and the full detail — answer, review, follow-ups — in the third. Later questions stay visibly locked until earlier ones are actually finished, so the structure itself communicates the "finish this before moving on" rule instead of just enforcing it silently.</p>
+    </div>
+  </section>
+
+  <section id="skill" aria-labelledby="skill-heading">
+    <h2 id="skill-heading">Turning the workflow into a skill</h2>
+    <p>Once the review process had stabilized — claim before working, a consistent formatting convention, the hand-wavy-language check, one follow-up instead of a menu, re-checking downstream questions instead of asking something already covered — it stopped being something worth re-explaining from scratch for the next company. So it became a <a href="https://github.com/ericthebigsal/claude-skills" target="_blank" rel="noopener">Claude Code skill</a>: a documented, reusable process Claude loads automatically whenever this kind of review comes up again.</p>
+    <p>The skill's checklist isn't hypothetical — it's built directly from the two real mistakes above, written down as a rationalization table and a red-flags list, so the next session starts already knowing not to repeat them instead of relying on me to catch it live a second time.</p>
+    <div class="case-note">This is the part I think matters most: the corrections above didn't just fix the tool once. They got captured as process, so the system actually gets better with use instead of resetting to the same baseline every session.</div>
+  </section>
+
+  <section id="stack" aria-labelledby="stack-heading">
+    <h2 id="stack-heading">What it's built on</h2>
+    <p>FastAPI + SQLite backend (four tables: raw answers, reviews, reactive follow-ups, and an append-only event log). Vanilla JS frontend — no framework, no build step — polling the API every few seconds for live updates. A background <code>Monitor</code>-driven watcher script that turns database changes into notifications inside the coding session itself, so review work starts within seconds of an answer being saved rather than waiting to be asked. Every meaningful design correction above happened through direct conversation with Claude Code, verified live in a browser rather than assumed to work.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p><a href="index.html">&larr; Back to eric salerno</a></p>
+  <p>&copy; 2026 Eric Salerno</p>
+</footer>
+</body>
+</html>
