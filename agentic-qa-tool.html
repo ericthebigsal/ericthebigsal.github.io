@@ -12,6 +12,71 @@
 <meta property="og:url" content="https://ericthebigsal.github.io/agentic-qa-tool.html">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="styles.css">
+<style>
+  /* Scoped demo-widget styles — dark palette matches the real tool's actual
+     look, deliberately distinct from this site's light theme so the widget
+     reads as "an app embedded in the page," not a themed site section. */
+  .demo-frame{
+    --dbg:#12141a; --dbg-elev:#1b1f28; --dborder:#2a2f3a;
+    --dtext:#e8e6df; --dtext-dim:#9aa0af; --dtext-dimmer:#6b7180;
+    --dq:#d9a441; --dq-bg:rgba(217,164,65,.12);
+    --da:#4fb3a9; --da-bg:rgba(79,179,169,.1);
+    --dreview:#7a9ad9; --dreview-bg:rgba(122,154,217,.12);
+    --dok:#5fc47a;
+    background:var(--dbg); color:var(--dtext); border-radius:12px; border:1px solid var(--dborder);
+    overflow:hidden; box-shadow:0 20px 50px -30px rgba(0,0,0,.5);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    margin:1.25rem 0;
+  }
+  .demo-topbar{padding:.6rem 1rem;border-bottom:1px solid var(--dborder);font-size:.72rem;color:var(--dtext-dimmer);
+    font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.05em;text-transform:uppercase}
+  .demo-columns{display:flex;min-height:280px}
+  .demo-col{padding:.8rem}
+  .demo-col1{width:130px;flex:none;border-right:1px solid var(--dborder)}
+  .demo-col2{width:180px;flex:none;border-right:1px solid var(--dborder)}
+  .demo-col3{flex:1;min-width:0}
+  .demo-col-label{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-size:.6rem;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--dtext-dimmer);margin:0 0 .5rem}
+  .demo-item{display:block;width:100%;text-align:left;background:transparent;border:1px solid transparent;color:var(--dtext-dim);
+    font-size:.76rem;padding:.4rem .5rem;border-radius:6px;margin-bottom:.3rem;line-height:1.35}
+  .demo-item.active{background:var(--dq-bg);border-color:var(--dq);color:var(--dtext)}
+  .demo-item.locked{opacity:.4}
+  .demo-node{margin-bottom:.8rem}
+  .demo-qbubble{background:var(--dq-bg);border:1px solid rgba(217,164,65,.35);border-radius:12px;border-top-left-radius:4px;padding:.6rem .8rem}
+  .demo-who{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-size:.6rem;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--dq);margin-bottom:.25rem;display:flex;align-items:center;gap:.4rem}
+  .demo-qtext{font-size:.83rem;line-height:1.45}
+  .demo-answerbox{margin-top:.5rem}
+  .demo-answerbox .demo-who{color:var(--da);justify-content:flex-end}
+  .demo-answer-text{background:var(--da-bg);border:1px solid rgba(79,179,169,.35);border-radius:12px;border-top-right-radius:4px;
+    padding:.6rem .8rem;font-size:.82rem;line-height:1.45}
+  .demo-reviewbox{margin-top:.6rem;background:var(--dreview-bg);border:1px solid rgba(122,154,217,.4);border-radius:10px;padding:.6rem .8rem}
+  .demo-reviewbox .demo-who{color:var(--dreview);justify-content:space-between}
+  .demo-section-header{background:rgba(122,154,217,.24);color:var(--dreview);font-weight:700;font-size:.64rem;text-transform:uppercase;
+    letter-spacing:.05em;padding:.22rem .5rem;border-radius:5px;margin:.4rem 0 .3rem;display:inline-block}
+  .demo-reviewbox ul{margin:.2rem 0 .5rem;padding-left:1.1rem;font-size:.8rem;line-height:1.5}
+  .demo-reviewbox p{font-size:.8rem;margin:.3rem 0 0;line-height:1.5}
+  .demo-badge{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-size:.58rem;padding:.06rem .4rem;
+    border-radius:20px;border:1px solid var(--dborder);color:var(--dtext-dimmer)}
+  .demo-badge.approved{border-color:var(--dok);color:var(--dok)}
+  .demo-badge.draft{border-color:var(--dreview);color:var(--dreview)}
+  .demo-reactive{margin-top:.6rem;margin-left:.7rem;padding-left:.7rem;border-left:2px dashed rgba(122,154,217,.4)}
+  .demo-reactive-label{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-size:.58rem;
+    text-transform:uppercase;letter-spacing:.05em;color:var(--dreview);margin-bottom:.3rem}
+  .demo-placeholder{color:var(--dtext-dimmer);font-size:.82rem;font-style:italic}
+  .demo-footer{padding:.8rem 1rem;border-top:1px solid var(--dborder);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .demo-annotation{font-size:.85rem;color:var(--dtext-dim);max-width:58ch;line-height:1.5}
+  .demo-btn{background:var(--color-accent);color:#fff;border:none;border-radius:8px;padding:.55rem 1.05rem;font-size:.86rem;
+    font-weight:600;cursor:pointer;white-space:nowrap}
+  .demo-btn:hover{opacity:.9}
+  .demo-btn.approve{background:#1b7a45}
+  .demo-btn.restart{background:transparent;border:1px solid var(--dborder);color:var(--dtext-dim)}
+  .demo-stepcount{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-size:.7rem;color:var(--dtext-dimmer);white-space:nowrap}
+  @media (max-width:600px){
+    .demo-columns{flex-direction:column}
+    .demo-col1,.demo-col2{width:auto;border-right:none;border-bottom:1px solid var(--dborder)}
+  }
+</style>
 </head>
 <body class="case-study">
 <header class="site-header">
@@ -33,6 +98,49 @@
     <p>I was prepping for a platform-team leadership interview — the kind where the hiring manager tests whether you actually understand platform tradeoffs, not just whether you can recite a résumé. I'd already done deep research on the company and had a solid written interview-prep doc. It wasn't enough. Reading predicted questions off a page isn't the same as being asked them, and a static document can't react to what you actually say.</p>
     <p>So I asked Claude Code to build something better: a tool where I write real answers, and Claude reviews them the way an actual interviewer would react — reads what I said, reacts to it specifically, and either signs off or pushes back.</p>
     <p><strong>The details below are genericized</strong> — this was built for a real, active interview process, so the specific company, role, and interview content aren't reproduced here. What's real is the build: every correction, bug, and design decision described happened exactly as written.</p>
+  </section>
+
+  <section id="ux" aria-labelledby="ux-heading">
+    <h2 id="ux-heading">What it's actually like to use</h2>
+    <p>Three Miller columns — sections, that section's question sequence, and the full detail for whichever question is selected, the same pattern as a companion research-notes tool in the same project. A few things make it feel less like a form and more like an actual reviewer sitting across the table:</p>
+    <ul>
+      <li><strong>Nothing is pre-filled.</strong> Every answer box starts empty. Questions are Claude's predictions of what an interviewer might ask; answers are never invented on your behalf.</li>
+      <li><strong>Live status, not a black box.</strong> The moment Claude starts reviewing an answer, the page shows it — a "reviewing now" state appears within seconds, before the actual review is even written.</li>
+      <li><strong>Reacts to what you actually said.</strong> The follow-up question is generated from your specific answer, not a generic next step — and it's one question, not a menu to choose from.</li>
+      <li><strong>Draft until you say otherwise.</strong> Every cleaned-up answer needs an explicit approval, or you leave feedback and Claude revises against it directly.</li>
+      <li><strong>Locked until finished.</strong> The next question stays locked until the current one — and everything it spawned — is actually resolved, so nothing gets asked out of order or redundantly.</li>
+      <li><strong>Updates itself.</strong> The page polls quietly in the background and re-renders the moment something changes, with a small toast instead of a spinner or a manual refresh.</li>
+    </ul>
+  </section>
+
+  <section id="demo" aria-labelledby="demo-heading">
+    <h2 id="demo-heading">Try the happy path</h2>
+    <p>A scripted walkthrough — click to advance, nothing to type. The real tool's content is specific to an active interview process, so this uses a stand-in scenario instead: prepping for a Technical PM role on an <strong>agentic-first integration hub</strong> at a martech company — a platform where users create, run, monitor, remove, and request integrations, with an agent doing the actual building.</p>
+
+    <div class="demo-frame">
+      <div class="demo-topbar" id="demoTopbar">Integration Hub PM · Prep Q&amp;A (scripted demo)</div>
+      <div class="demo-columns">
+        <div class="demo-col demo-col1">
+          <div class="demo-col-label">Sections</div>
+          <div id="demoCol1"></div>
+        </div>
+        <div class="demo-col demo-col2">
+          <div class="demo-col-label">Questions</div>
+          <div id="demoCol2"></div>
+        </div>
+        <div class="demo-col demo-col3">
+          <div class="demo-col-label">Result</div>
+          <div id="demoCol3"></div>
+        </div>
+      </div>
+      <div class="demo-footer">
+        <p class="demo-annotation" id="demoAnnotation"></p>
+        <div style="display:flex;align-items:center;gap:.8rem">
+          <span class="demo-stepcount" id="demoStepCount"></span>
+          <button class="demo-btn" id="demoBtn"></button>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section id="build" aria-labelledby="build-heading">
@@ -103,5 +211,106 @@
   <p><a href="index.html">&larr; Back to eric salerno</a></p>
   <p>&copy; 2026 Eric Salerno</p>
 </footer>
+
+<script>
+// Fully scripted, click-only walkthrough — no live backend, no typing.
+// Content is a stand-in scenario (martech "agentic integration hub" PM
+// role); the interaction pattern matches the real tool exactly.
+const DEMO = {
+  q1: `Walk me through what actually happens, end to end, when someone clicks "Create Integration" — until it's actually running in production.`,
+  answer: `The user points the agent at a source and a destination and describes what they want moved. The agent pulls both systems' real API docs, proposes a field mapping, and flags anything ambiguous for a human to confirm before it writes anything. Once confirmed, it generates the integration, runs it against a sandbox account, and only promotes it to production after a test batch passes validation.`,
+  reviewHtml: `<div class="demo-section-header">Key points</div>
+    <ul>
+      <li>User specifies source, destination, and intent — the agent does the mapping work</li>
+      <li>Agent reads both systems' real API docs and proposes a mapping, not a guess</li>
+      <li>Anything ambiguous is flagged for a human to confirm before any code is written</li>
+      <li>Nothing reaches production without a passing sandbox test batch first</li>
+    </ul>
+    <div class="demo-section-header">Full answer</div>
+    <p>The user points the agent at a source and a destination and describes what they want moved. The agent reads both systems' API docs, proposes a field mapping, and flags anything ambiguous for a human to confirm before writing anything. Once confirmed, it generates the integration, runs it against a sandbox account, and only promotes it to production after a test batch passes validation.</p>`,
+  followup: `You said the agent flags anything ambiguous — what's the actual bar for "ambiguous," and who's on the hook to resolve it before the integration ships?`,
+  q2: `What happens when a running integration starts failing silently — how does "monitored" actually work?`,
+};
+
+const DEMO_STEPS = [
+  { annotation: `Sections on the left, that section's question sequence in the middle, full detail on the right. Q1 is selected — Q2 is greyed out and locked until this question's whole thread is resolved.`, btn: `Reveal the example answer →` },
+  { annotation: `In the real tool this is an empty text box — nothing pre-filled, nothing invented. This demo scripts an example so there's something to click through.`, btn: `Have Claude review it →` },
+  { annotation: `Claude reorganizes and tightens what was actually said — bullets for a fast scan, full prose below. It never adds a fact, name, or number that wasn't in the original answer.`, btn: `See the follow-up question →` },
+  { annotation: `The follow-up reacts to the specific thing just said — not a generic next question, and never a menu of options to pick from.`, btn: `Approve this answer →` },
+  { annotation: `Every cleaned-up answer is a draft until it's explicitly approved — or sent back with feedback, which Claude revises against directly.`, btn: `See the next question unlock →` },
+  { annotation: `Q2 just unlocked, because Q1's entire thread — including the follow-up — is now fully resolved. Nothing gets asked out of order or before it's actually relevant.`, btn: `↺ Restart demo` },
+];
+
+let demoPhase = 0;
+
+function demoBadge(phase){
+  if(phase < 1) return '';
+  if(phase < 2) return '<span class="demo-badge">Awaiting review</span>';
+  if(phase < 4) return '<span class="demo-badge draft">Draft</span>';
+  return '<span class="demo-badge approved">Approved ✓</span>';
+}
+
+function renderDemo(){
+  const col1 = document.getElementById('demoCol1');
+  const col2 = document.getElementById('demoCol2');
+  const col3 = document.getElementById('demoCol3');
+  const annotation = document.getElementById('demoAnnotation');
+  const btn = document.getElementById('demoBtn');
+  const stepCount = document.getElementById('demoStepCount');
+
+  col1.innerHTML = `<button class="demo-item active">Integration Lifecycle</button><button class="demo-item">Reliability &amp; Trust</button>`;
+
+  const q2Locked = demoPhase < 5;
+  col2.innerHTML = `
+    <button class="demo-item active">Q1 ${demoBadge(demoPhase)}</button>
+    <button class="demo-item ${q2Locked ? 'locked' : ''}">Q2 ${q2Locked ? '🔒' : ''}</button>`;
+
+  let html = `<div class="demo-node">
+    <div class="demo-qbubble">
+      <div class="demo-who">🗣 Interviewer ${demoBadge(demoPhase)}</div>
+      <div class="demo-qtext">${DEMO.q1}</div>
+    </div>`;
+
+  if(demoPhase >= 1){
+    html += `<div class="demo-answerbox">
+      <div class="demo-who">💬 Answer</div>
+      <div class="demo-answer-text">${DEMO.answer}</div>
+    </div>`;
+  }
+
+  if(demoPhase >= 2){
+    html += `<div class="demo-reviewbox">
+      <div class="demo-who"><span>🧭 Claude's cleaned-up version</span>${demoBadge(demoPhase)}</div>
+      ${DEMO.reviewHtml}
+    </div>`;
+  }
+
+  if(demoPhase >= 3){
+    html += `<div class="demo-reactive">
+      <div class="demo-reactive-label">Reactive follow-up, based on the answer above</div>
+      <div class="demo-qbubble">
+        <div class="demo-who">🎯 Claude, reacting</div>
+        <div class="demo-qtext">${DEMO.followup}</div>
+      </div>
+    </div>`;
+  }
+
+  html += `</div>`;
+  col3.innerHTML = html;
+
+  const step = DEMO_STEPS[demoPhase];
+  annotation.textContent = step.annotation;
+  btn.textContent = step.btn;
+  btn.className = 'demo-btn' + (demoPhase === 3 ? ' approve' : '') + (demoPhase === 5 ? ' restart' : '');
+  stepCount.textContent = `Step ${demoPhase + 1} of ${DEMO_STEPS.length}`;
+}
+
+document.getElementById('demoBtn').addEventListener('click', ()=>{
+  demoPhase = demoPhase === 5 ? 0 : demoPhase + 1;
+  renderDemo();
+});
+
+renderDemo();
+</script>
 </body>
 </html>
