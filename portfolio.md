@@ -284,3 +284,75 @@ tracking progress, velocity, and milestones, and presented data-driven
 insights to leadership on a recurring basis.
 
 </div>
+
+<div class="role-section role-compact" markdown="1">
+
+## Microsoft {#microsoft}
+
+<p class="role-meta">Senior Program Manager · Jan 2004 – Oct 2014 (two stints, with Appature in between Nov 2012 – Sep 2013) · Redmond, WA</p>
+
+I led the initial API design and shipped the PlayReady DRM platform — core
+functionality and APIs for Windows 8 and Silverlight 2/3/4 — a true
+zero-to-one platform build that needed Tier-1 content-partner adoption
+against a contested standards landscape. I drove product strategy
+end-to-end (scenarios, feature specs, Sprint-based Agile delivery),
+fostered collaboration across Windows, IIS, A/V Services, and Online
+Services, engaged directly with Tier-1 and third-party partners, and
+represented PlayReady at industry standards bodies. Later, on Xbox One, I
+led the security program hardening the console's offline licensing model
+at the silicon and firmware level — security updates to the optical disc
+drive DSP, coordinated across ODD teams, silicon vendors, and firmware
+engineers, plus third-party penetration testing before launch — and led
+the launch of a security-focused SaaS delivery model for critical
+Microsoft technologies. Earlier in my Microsoft tenure, I was product
+owner and PM for a highly customized SharePoint-based knowledge-sharing
+platform for Microsoft Consulting Services, leading a 20+ person offshore
+development and testing team in Bangalore and traveling to India twice for
+major delivery milestones.
+
+</div>
+
+<div class="role-section role-compact" markdown="1">
+
+## Amazon {#amazon}
+
+<p class="role-meta">Senior Technical Program Manager · Oct 2014 – Jul 2015 · Seattle, WA — Amazon Coins team</p>
+
+Amazon Coins is Amazon's virtual currency for purchasing apps, games, and
+in-app content. I developed and implemented fraud-detection models using
+data-mining techniques to catch abuse patterns specific to virtual
+currency — patterns traditional retail fraud models weren't built to
+catch — using a customer-experience-first approach that improved detection
+coverage without adding friction for legitimate customers. I also built
+customer-segmentation models to identify high-value customers ("whales")
+within the user base, enabling marketing to target campaigns calibrated to
+actual customer behavior and value.
+
+</div>
+
+<div class="role-section role-compact" markdown="1">
+
+## Accolade {#accolade}
+
+<p class="role-meta">Director of TPM / Technical Product Manager · Mar 2017 – May 2022 · Seattle, WA — promoted from IC TPM to Director, Mar 2021</p>
+
+Accolade is a personalized health-navigation company serving large
+employer clients. As an IC TPM I led the design and implementation of new
+data-ingestion infrastructure for partner feeds — member claims,
+employment data, enrollments — establishing the data-quality foundation
+later projects depended on. I then owned a multi-year migration from a
+heavily customized Microsoft Dynamics CRM to a custom in-house solution
+for Accolade's 50+ Health Assistant workforce, using a phased rollout
+(pilot → structured feedback → iterate → full scale) that improved user
+satisfaction and data accuracy without disrupting Health Assistants
+serving members day to day. When Accolade acquired 2nd.MD and PlushCare, I
+drove the program to unify Accolade's core technology and infrastructure
+with both acquired companies — data mapping, API design, HIPAA-compliant
+data security, and integration across services/data tiers, client portals,
+CRM portals, and member-facing portals. I was promoted to Director of TPM
+and led a team of 4-5 Technical Program Managers responsible for all data
+ingress and egress across the platform, building deep hands-on expertise
+across data warehouses, data lakes, CRM systems, and partner feeds to
+resolve client and partner data issues quickly.
+
+</div>
