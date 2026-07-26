@@ -44,3 +44,151 @@ What I care about now: agentic workflows, LLM orchestration, and
 autonomous systems that do real work in production — built fast, on small
 teams, where the PM is close enough to the code to debate the architecture
 and close enough to the customer to know it matters.
+
+
+<div class="role-section" markdown="1">
+
+## Amperity {#amperity}
+
+<p class="role-meta">Technical Product Manager · Feb 2025 – Jun 2026 · Remote / US — Enterprise Customer Data Platform (CDP) &amp; Data Activation</p>
+
+Amperity is an enterprise customer-data-platform and data-activation
+company. I owned the connector and destination-activation program
+end-to-end — from customer demand intake through requirements, spec
+authoring, engineering hand-off, release tracking, and adoption
+reporting — across a ~16-month tenure (Feb 2025 – Jun 2026) that also
+included ~30 years of prior career: senior developer through
+Director/Sr. Director of Technical Program Management.
+
+### Owning the Connector &amp; Destination Integration Program
+
+The company's value depends on activating customer data into a long tail
+of third-party destinations — ad platforms, ESPs, marketing and loyalty
+tools — but demand arrived from every direction (sales, customer success,
+customers directly) with no consistent way to capture, judge, scope, or
+report on it. I stood up and ran the end-to-end intake pipeline: captured
+demand through the product feedback tool and direct customer signals,
+translated it into structured, engineering-ready requests, and
+prioritized against business context. I authored 59+ connector request
+specs spanning CAPI/server-side event APIs, ESPs, ad networks, messaging,
+loyalty, and real-time streaming destinations, enriched each with the
+business context engineering needed to prioritize — which customers
+wanted it, urgency, strategic fit — and maintained the release roadmap
+(real-time / traditional / pilot swimlanes) presented at the recurring
+product-monthly meeting. The result: a chaotic, multi-channel demand
+stream became a single governed pipeline with clear status, ownership,
+and a forward-looking roadmap — the connective tissue between customers,
+sales/CS, and engineering. Over the tenure this shipped 24 connectors to
+production (12 batch, 12 real-time).
+
+### Writing Specs Engineering Could Build From
+
+Engineering needed crisp, validated specs to build connectors
+efficiently — without them, build cycles stalled on ambiguity and
+rework. I wrote the full ladder of product artifacts — business
+requirements documents, functional specs, and engineering hand-off
+specifications — for destination connectors and platform capabilities,
+and standardized them into repeatable templates covering problem
+framing, MUST/SHOULD/MAY requirements, scope and out-of-scope,
+dependencies, risks, and open questions, so every spec hit the same bar.
+Before committing engineering time, I validated integration feasibility
+myself: interrogating partner API docs, building Postman collections,
+and standing up mock APIs to prove a spec was buildable before anyone
+wrote production code. I also authored platform-level requirements for
+several bigger bets — a self-serve connector capability, a connector
+SDK, real-time connectors, and a destination testing/"revamp"
+initiative. The result was a pipeline of specs that arrived scoped,
+de-risked, and validated, letting engineering take on a much wider
+catalog of integrations than they otherwise could.
+
+### Building an AI-Assisted Integration System — and the Tooling Around It
+
+Program ownership at this scale generated enormous amounts of repeatable
+analytical and reporting work, and the most technical response I built
+to it was a two-part AI-assisted integration system in Python and
+Claude. The discovery half is a human-in-the-loop pipeline: it takes an
+OpenAPI spec and sample data, uses web search to understand the
+destination API, validates the auth model with a live credential ping,
+and produces a confidence-scored mapping from source columns to
+destination endpoints — which I could review and adjust — that gets
+written out as a config file fully specifying the integration. The
+execution half is a dockerized engine that exposes an endpoint, loads
+that config, applies the required transformations, and delivers the
+data to the destination, handling production concerns like rate
+limiting, payload size limits, callbacks, and pagination, backed by a
+custom-built credential vault and a SQL database for config versioning
+and run history. I held to one architecture principle throughout:
+deterministic Python everywhere the logic was unambiguous, and LLM calls
+only where natural-language reasoning actually added value. I validated
+the resulting config format against Amperity's existing production
+integration library and found it 85% compatible out of the box, with the
+remaining 15% blocked by unsupported auth mechanisms or SOAP-based APIs.
+Along the way I evaluated and discarded both a RAG layer and a
+multi-agent orchestration approach — neither solved the actual problem,
+and a single focused pipeline did the job without the added complexity.
+
+Beyond that system, I built more than 30 reusable automation tools and
+workflows covering release status reporting, requirements enrichment,
+blocked-item triage, documentation auditing, roadmap generation, and
+analytical-narrative generation, plus internal MCP servers that
+connected the team's tools into automated workflows, and six mock
+destination APIs built with FastAPI so integrations to credential-gated
+partners could be scoped and demoed without needing live access.
+
+### Turning Program Data into Decisions
+
+Product leadership, customer success, and customers all needed
+visibility into integration adoption, activation and usage, and program
+health, but the data was scattered across systems. I designed and
+shipped multiple production dashboards and data apps — built in
+Streamlit-in-Snowflake and in HTML — covering connector release status,
+activation and usage trends, monthly-business-review metrics, and a
+documentation/knowledge dashboard for the team. I applied real
+analytical rigor to each: choosing the visual encoding that actually fit
+the question, and using statistical and anomaly-detection thinking
+rather than naive fixed thresholds for monitoring. I calibrated every
+output to its audience, building executive-ready roadmap decks and MBR
+references alongside more operational, technical views for the team
+itself.
+
+### Closing the Loop Between Customers and Engineering
+
+Customers and field teams regularly hit friction operating integrations
+and activation features, and sales needed fast, credible feasibility
+answers. I triaged reported connector and capability gaps by verifying
+the claim across source code, vendor docs, product docs, live tenant
+configuration, and run history — distinguishing a genuine product gap
+from a misconfiguration or a documentation gap before anyone escalated
+it as a bug. I built journey and campaign automation tooling and
+validated activation mechanics like templating, segmentation, and
+scheduling against real and synthetic data, and produced demo and pilot
+environments and synthetic datasets to prove out features and
+integrations for prospects and customers. That work shortened the loop
+between a customer reporting a problem and knowing exactly whether it
+was a config fix, a docs fix, or a build — and gave the field answers it
+could trust.
+
+### Running the Operational Backbone
+
+The integration program touched engineering, product, sales, customer
+success, docs, and partners, and I was the hub connecting all of them —
+gathering demand, aligning priorities, tracking delivery, and reporting
+status on recurring cadences that included weekly status updates, a
+monthly roadmap review, and MBRs. I managed a tracking-system migration
+mid-program, consolidating the team onto a new project/board structure
+and re-pointing all the automation that depended on the old one. I
+defined a repeatable process running from intake through spec authoring,
+engineering hand-off, release, and adoption reporting, and encoded it as
+tooling rather than leaving it as tribal knowledge, so it kept working
+as the team and the program grew.
+
+Across the tenure, the headline numbers: the AI-assisted integration
+system cut connector development time roughly 90%, from about four
+weeks down to about two days; its output was 85% compatible with
+Amperity's existing production integration library out of the box; 24
+connectors shipped to production (12 batch, 12 real-time); intake
+automation cut the time from a customer request to a dev-ready spec and
+ticket from about a week to about an hour; and three hand-built pilot
+connectors kept Amperity competitive in active sales deals.
+
+</div>
