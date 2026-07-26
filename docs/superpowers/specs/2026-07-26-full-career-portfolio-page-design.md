@@ -20,11 +20,19 @@ repo/site (doubles maintenance — two `About`/contact sections, two design
 systems, and creates the exact confusion this is meant to avoid — which
 link do you send?).
 
-`portfolio.html` reuses the existing `styles.css` design system so it reads
-as the same site/person, and deploys automatically via the repo's existing
-GitHub Pages publish — no new infrastructure. The homepage gets one new nav
-link ("Full Portfolio") pointing to it; `portfolio.html` links back to the
-homepage.
+Eric also wants a PDF download of this page, so authoring follows the
+pattern already established everywhere else in this project (resumes,
+cover letters, company writeups): a single Markdown source rendered to
+both HTML and PDF, rather than two independently-maintained copies that
+can drift apart. `portfolio.md` is the source of truth; it renders to
+`portfolio.html` (pandoc + a new `portfolio-style.css`, visually matching
+this site rather than the plainer stylesheet used for company research
+docs) and to `portfolio.pdf` (same headless-Chrome print step already used
+for resume/cover-letter PDFs — see Rendering below). Both deploy via the
+repo's existing GitHub Pages publish — no new infrastructure. The homepage
+gets one new nav link ("Full Portfolio") pointing to `portfolio.html`;
+`portfolio.html` links back to the homepage and offers "Download PDF"
+near its own Resume/Contact section.
 
 ## Content Source & Cleanup
 
@@ -89,20 +97,42 @@ order:
 9. **Resume + Contact** — reused from the homepage (same PDF link, same
    contact section).
 
+## Rendering
+
+Matches the pipeline already used by the `research-company` skill for
+resumes/cover letters:
+
+```bash
+pandoc portfolio.md -o /tmp/portfolio.html --standalone \
+  --metadata title="Eric Salerno - Full Career Portfolio" \
+  --css=portfolio-style.css --embed-resources
+cp /tmp/portfolio.html portfolio.html   # repo root
+
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless \
+  --disable-gpu --no-pdf-header-footer --print-to-pdf=portfolio.pdf \
+  --print-to-pdf-no-header "file:///tmp/portfolio.html"
+```
+
+`portfolio-style.css` is a new stylesheet (lives alongside `styles.css` in
+this repo) built to match the site's existing look — fonts, colors, the
+same card treatment used for the homepage's project case studies — rather
+than reusing the plainer `writeup-style.css` from the `research-company`
+skill, which is tuned for internal research docs, not a public-facing page.
+
 ## Styling & Length
 
-Reuse `styles.css` as-is; add new component classes only if a tier's
-layout genuinely needs one (e.g. a more compact block style for Tier 2/3
-entries vs. the full Problem/Impact card style used for Tier 1 and the
-project case studies). No new CSS framework or build tooling. The page will
-be long (several thousand words) — that's intentional per Eric's brief —
-so the top jump-nav is load-bearing, not decorative.
+New component styles (in `portfolio-style.css`) as each tier needs: a full
+Problem/Impact card style for Tier 1 and the project case studies, a more
+compact block style for Tier 2/3 entries. No new CSS framework or build
+tooling beyond pandoc (already used elsewhere in the project) and the
+existing headless-Chrome PDF step. The page will be long (several thousand
+words) — that's intentional per Eric's brief — so the top jump-nav is
+load-bearing, not decorative, in both the HTML and as PDF bookmarks/anchors
+where pandoc supports it.
 
 ## Out of scope
 
-- No PDF export of this page — it's meant to be shared as a link, not an
-  attachment.
 - No changes to `agentic-qa-tool.html` or the existing case-study content
   beyond linking to it.
 - No changes to `career/ACCOMPLISHMENTS.md` itself — it stays the internal
-  source doc; this page is a derived, cleaned artifact.
+  source doc; `portfolio.md` is a derived, cleaned artifact.
