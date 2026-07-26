@@ -192,3 +192,95 @@ ticket from about a week to about an hour; and three hand-built pilot
 connectors kept Amperity competitive in active sales deals.
 
 </div>
+
+<div class="role-section" markdown="1">
+
+## Press Ganey {#press-ganey}
+
+<p class="role-meta">Senior Director, Technical Program Management · Mar 2022 – Aug 2024 · Greater Seattle — promoted from Distinguished TPM; reported directly to the CTO</p>
+
+Press Ganey is a leading healthcare experience and performance
+improvement company serving thousands of healthcare organizations. I
+joined as a Distinguished TPM and was promoted to Senior Director,
+owning a portfolio of strategic initiatives directly for the CTO.
+
+### Leading the Epic Partnership &amp; Integration
+
+Press Ganey's patient-experience data had significant untapped value
+inside the Epic EHR ecosystem — the dominant system in US healthcare —
+but no integration existed, and building one required a true strategic
+partnership across two organizations with different cultures,
+timelines, and architectures. I spearheaded the Press Ganey/Epic
+integration, delivering key milestones including MyChart (Epic's
+patient-facing portal) and Cheers CRM (Epic's relationship-management
+tool), bringing Press Ganey data directly into the systems clinicians
+and administrators actually use. I was the primary relationship owner
+across both organizations — managing senior leadership and key
+decision-makers at both companies simultaneously, coordinating
+product, engineering, sales, and marketing at both to keep execution
+aligned with the partnership roadmap, gathering and analyzing market
+requirements to define scope, and presenting executive summaries and
+status reports to senior leadership at both companies. The result was
+a live Epic integration giving healthcare organizations real-time
+patient-experience insights inside the clinical workflow — a
+differentiated capability that expanded Press Ganey's EHR footprint.
+
+### Unifying Technology Across Acquisitions
+
+Press Ganey had made multiple acquisitions, each with its own tech
+stack, data architecture, and engineering team, all needing assessment,
+rationalization, and unification onto the Press Ganey platform without
+disrupting live products. I drove the technical unification across the
+acquired companies, working directly with the CTO on integration
+strategy. I led technical due diligence for multiple acquisitions —
+assessing feasibility, integration risk, and synergy opportunities
+before commitments were made — developed and implemented migration
+strategies for acquired systems and data, coordinating engineering
+teams across multiple locations, and built and presented technical
+roadmaps and integration proposals to senior leadership and board
+members.
+
+### Building the TPM Career Path from Scratch
+
+Press Ganey had no defined TPM discipline — no career path, no role
+definitions, no performance expectations — which made it impossible to
+hire, develop, or retain technical program management talent
+consistently. I built the first TPM career path at Press Ganey from
+scratch, working closely with the CTO and their direct reports to
+define roles, responsibilities, and career progression for ICs and
+managers. I authored job descriptions, role definitions, and career
+progression models for every level, defined performance expectations,
+KPIs, and compensation guidelines, and delivered presentations and
+workshops to build organization-wide buy-in, including transitioning
+existing Business Analysts and Project Managers into TPM roles. The
+result was a structured TPM discipline across the engineering
+organization, and the foundation for consistent hiring and development
+going forward.
+
+### Making the Call Not to Pursue FedRAMP
+
+Press Ganey was considering FedRAMP authorization to expand into the
+federal healthcare market — a substantial, typically multi-year,
+multi-million-dollar investment that needed rigorous analysis before
+committing. I led the feasibility analysis across technical,
+operational, and financial requirements, evaluated the full compliance
+scope — infrastructure, process controls, staffing, tooling,
+third-party assessment costs, and ongoing maintenance — and built an
+ROI-based no-go recommendation that I drove through to an actual
+decision rather than a report that sat on a shelf. Leadership accepted
+the no-go recommendation, avoiding a costly multi-year program that
+wouldn't have generated sufficient return — one of the harder and more
+valuable calls a TPM can make and defend.
+
+### Unifying the SDLC Around Jira and Jira Align
+
+Engineering teams operated with inconsistent processes and tooling,
+making it impossible to get reliable visibility into project health,
+team performance, or roadmap progress at the executive level. I drove
+adoption of Jira and Jira Align across multiple engineering teams,
+collaborated with executive management and development leadership to
+define and prioritize KPIs, built custom reports and dashboards
+tracking progress, velocity, and milestones, and presented data-driven
+insights to leadership on a recurring basis.
+
+</div>
