@@ -1,0 +1,152 @@
+:root {
+  --max-width: 760px;
+  --color-bg: #fafafa;
+  --color-surface: #ffffff;
+  --color-text: #1f2933;
+  --color-muted: #52606d;
+  --color-border: #e4e7eb;
+  --color-accent: #1d4ed8;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.65;
+  max-width: var(--max-width);
+  padding: 2rem 1.5rem 4rem;
+  margin: 0 auto;
+}
+
+#title-block-header {
+  display: none;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+
+h1 {
+  font-size: 2rem;
+  margin: 0 0 0.25rem;
+}
+
+h1 + p {
+  color: var(--color-muted);
+  font-size: 1.05rem;
+  margin: 0 0 1.5rem;
+}
+
+.jump-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding: 1rem;
+  margin: 0 0 2rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+.jump-nav a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+.jump-nav a:hover {
+  text-decoration: underline;
+}
+
+h2 {
+  font-size: 1.4rem;
+  margin: 2.5rem 0 0.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.role-meta {
+  color: var(--color-muted);
+  font-style: italic;
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+}
+
+.role-section h3 {
+  font-size: 1.1rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.role-compact p {
+  margin: 0 0 1rem;
+}
+
+.role-oneline {
+  margin: 0.5rem 0;
+}
+.role-oneline strong {
+  color: var(--color-text);
+}
+
+.project-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.project-summary-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+.project-summary-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+}
+.project-summary-card p {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  color: var(--color-muted);
+}
+
+.pdf-download {
+  display: inline-block;
+  margin: 0.5rem 0 1rem;
+  padding: 0.6rem 1.1rem;
+  background: var(--color-accent);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+}
+.pdf-download:hover {
+  opacity: 0.9;
+}
+
+@media print {
+  .jump-nav,
+  .back-link,
+  .pdf-download {
+    display: none;
+  }
+  .role-section,
+  .role-section h3 {
+    page-break-inside: avoid;
+  }
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+}
