@@ -141,9 +141,14 @@ h2 {
   .pdf-download {
     display: none;
   }
-  .role-section,
-  .role-section h3 {
+  .role-oneline,
+  .project-summary-card,
+  .role-meta {
     page-break-inside: avoid;
+  }
+  h2,
+  h3 {
+    page-break-after: avoid;
   }
   a {
     color: inherit;

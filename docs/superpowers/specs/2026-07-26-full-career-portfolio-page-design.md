@@ -105,6 +105,8 @@ resumes/cover letters:
 ```bash
 pandoc portfolio.md -o /tmp/portfolio.html --standalone \
   --metadata title="Eric Salerno - Full Career Portfolio" \
+  --metadata lang=en \
+  --include-in-header=portfolio-head.html \
   --css=portfolio-style.css --embed-resources
 cp /tmp/portfolio.html portfolio.html   # repo root
 

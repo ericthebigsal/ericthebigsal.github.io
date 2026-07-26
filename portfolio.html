@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc 3.10" />
@@ -153,9 +153,14 @@ opacity: 0.9;
 .pdf-download {
 display: none;
 }
-.role-section,
-.role-section h3 {
+.role-oneline,
+.project-summary-card,
+.role-meta {
 page-break-inside: avoid;
+}
+h2,
+h3 {
+page-break-after: avoid;
 }
 a {
 color: inherit;
@@ -163,6 +168,15 @@ text-decoration: underline;
 }
 }
 </style>
+  <meta name="description" content="The full career story behind the resume — Amperity, Press Ganey, Microsoft, Amazon, Accolade, and independent AI portfolio work.">
+  <link href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTIiIGZpbGw9IiMxZDRlZDgiLz4KICA8dGV4dCB4PSIzMiIgeT0iNDMiIGZvbnQtZmFtaWx5PSItYXBwbGUtc3lzdGVtLCBCbGlua01hY1N5c3RlbUZvbnQsICdTZWdvZSBVSScsIFJvYm90bywgSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RVM8L3RleHQ+Cjwvc3ZnPgo=" rel="icon" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Eric Salerno — Full Career Portfolio">
+  <meta property="og:description" content="The full career story behind the resume — Amperity, Press Ganey, Microsoft, Amazon, Accolade, and independent AI portfolio work.">
+  <meta property="og:url" content="https://ericthebigsal.github.io/portfolio.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Eric Salerno — Full Career Portfolio">
+  <meta name="twitter:description" content="The full career story behind the resume — Amperity, Press Ganey, Microsoft, Amazon, Accolade, and independent AI portfolio work.">
 </head>
 <body>
 <header id="title-block-header">
@@ -181,19 +195,19 @@ version, and the AI project case studies are written up in full there
 too.</p>
 <nav class="jump-nav" aria-label="Jump to section">
 <a href="#about">About</a> <a href="#amperity">Amperity</a>
-<a href="#press-ganey">Press Ganey</a>
-<a href="#microsoft">Microsoft</a> <a href="#amazon">Amazon</a>
-<a href="#accolade">Accolade</a> <a href="#earlier-roles">Earlier
-Roles</a> <a href="#ai-projects">AI Portfolio Projects</a>
-<a href="#skills-credentials">Skills &amp; Credentials</a>
-<a href="#resume-contact">Resume &amp; Contact</a>
+<a href="#press-ganey">Press Ganey</a> <a href="#accolade">Accolade</a>
+<a href="#amazon">Amazon</a> <a href="#microsoft">Microsoft</a>
+<a href="#earlier-roles">Earlier Roles</a> <a href="#ai-projects">AI
+Portfolio Projects</a> <a href="#skills-credentials">Skills &amp;
+Credentials</a> <a href="#resume-contact">Resume &amp; Contact</a>
 </nav>
 <h2 id="about">About</h2>
 <p>I’m a technical product manager who builds. I don’t just own the
 backlog — I design the architecture and ship the system. Most recently,
-at Amperity, I designed and built a multi-agent RAG SDK that automates
-third-party API integration and cut development time roughly 90%, from
-about four weeks down to a couple of days.</p>
+at Amperity, I designed and built a two-part AI-assisted integration
+system — a HITL discovery pipeline and a dockerized execution engine —
+that automates third-party API integration and cut development time
+roughly 90%, from about four weeks down to a couple of days.</p>
 <p>Over nearly 30 years I’ve gone from senior full-stack developer to
 technical product/program manager to Director and Senior Director of
 Technical Program Management, and the through-line has stayed the same:
@@ -217,9 +231,7 @@ Enterprise Customer Data Platform (CDP) &amp; Data Activation
 company. I owned the connector and destination-activation program
 end-to-end — from customer demand intake through requirements, spec
 authoring, engineering hand-off, release tracking, and adoption
-reporting — across a ~16-month tenure (Feb 2025 – Jun 2026) that also
-included ~30 years of prior career: senior developer through
-Director/Sr. Director of Technical Program Management.</p>
+reporting — across a ~16-month tenure (Feb 2025 – Jun 2026).</p>
 <h3 id="owning-the-connector-destination-integration-program">Owning the
 Connector &amp; Destination Integration Program</h3>
 <p>The company’s value depends on activating customer data into a long
@@ -430,47 +442,6 @@ define and prioritize KPIs, built custom reports and dashboards tracking
 progress, velocity, and milestones, and presented data-driven insights
 to leadership on a recurring basis.</p>
 </section>
-<section id="microsoft" class="role-section role-compact" data-markdown="1">
-<h2>Microsoft</h2>
-<p class="role-meta">
-Senior Program Manager · Jan 2004 – Oct 2014 (two stints, with Appature
-in between Nov 2012 – Sep 2013) · Redmond, WA
-</p>
-<p>I led the initial API design and shipped the PlayReady DRM platform —
-core functionality and APIs for Windows 8 and Silverlight 2/3/4 — a true
-zero-to-one platform build that needed Tier-1 content-partner adoption
-against a contested standards landscape. I drove product strategy
-end-to-end (scenarios, feature specs, Sprint-based Agile delivery),
-fostered collaboration across Windows, IIS, A/V Services, and Online
-Services, engaged directly with Tier-1 and third-party partners, and
-represented PlayReady at industry standards bodies. Later, on Xbox One,
-I led the security program hardening the console’s offline licensing
-model at the silicon and firmware level — security updates to the
-optical disc drive DSP, coordinated across ODD teams, silicon vendors,
-and firmware engineers, plus third-party penetration testing before
-launch — and led the launch of a security-focused SaaS delivery model
-for critical Microsoft technologies. Earlier in my Microsoft tenure, I
-was product owner and PM for a highly customized SharePoint-based
-knowledge-sharing platform for Microsoft Consulting Services, leading a
-20+ person offshore development and testing team in Bangalore and
-traveling to India twice for major delivery milestones.</p>
-</section>
-<section id="amazon" class="role-section role-compact" data-markdown="1">
-<h2>Amazon</h2>
-<p class="role-meta">
-Senior Technical Program Manager · Oct 2014 – Jul 2015 · Seattle, WA —
-Amazon Coins team
-</p>
-<p>Amazon Coins is Amazon’s virtual currency for purchasing apps, games,
-and in-app content. I developed and implemented fraud-detection models
-using data-mining techniques to catch abuse patterns specific to virtual
-currency — patterns traditional retail fraud models weren’t built to
-catch — using a customer-experience-first approach that improved
-detection coverage without adding friction for legitimate customers. I
-also built customer-segmentation models to identify high-value customers
-(“whales”) within the user base, enabling marketing to target campaigns
-calibrated to actual customer behavior and value.</p>
-</section>
 <section id="accolade" class="role-section role-compact" data-markdown="1">
 <h2>Accolade</h2>
 <p class="role-meta">
@@ -496,6 +467,47 @@ Managers responsible for all data ingress and egress across the
 platform, building deep hands-on expertise across data warehouses, data
 lakes, CRM systems, and partner feeds to resolve client and partner data
 issues quickly.</p>
+</section>
+<section id="amazon" class="role-section role-compact" data-markdown="1">
+<h2>Amazon</h2>
+<p class="role-meta">
+Senior Technical Program Manager · Oct 2014 – Jul 2015 · Seattle, WA —
+Amazon Coins team
+</p>
+<p>Amazon Coins is Amazon’s virtual currency for purchasing apps, games,
+and in-app content. I developed and implemented fraud-detection models
+using data-mining techniques to catch abuse patterns specific to virtual
+currency — patterns traditional retail fraud models weren’t built to
+catch — using a customer-experience-first approach that improved
+detection coverage without adding friction for legitimate customers. I
+also built customer-segmentation models to identify high-value customers
+(“whales”) within the user base, enabling marketing to target campaigns
+calibrated to actual customer behavior and value.</p>
+</section>
+<section id="microsoft" class="role-section role-compact" data-markdown="1">
+<h2>Microsoft</h2>
+<p class="role-meta">
+Senior Program Manager · Jan 2004 – Oct 2014 (two stints, with Appature
+in between Nov 2012 – Sep 2013) · Redmond, WA
+</p>
+<p>I led the initial API design and shipped the PlayReady DRM platform —
+core functionality and APIs for Windows 8 and Silverlight 2/3/4 — a true
+zero-to-one platform build that needed Tier-1 content-partner adoption
+against a contested standards landscape. I drove product strategy
+end-to-end (scenarios, feature specs, Sprint-based Agile delivery),
+fostered collaboration across Windows, IIS, A/V Services, and Online
+Services, engaged directly with Tier-1 and third-party partners, and
+represented PlayReady at industry standards bodies. Later, on Xbox One,
+I led the security program hardening the console’s offline licensing
+model at the silicon and firmware level — security updates to the
+optical disc drive DSP, coordinated across ODD teams, silicon vendors,
+and firmware engineers, plus third-party penetration testing before
+launch — and led the launch of a security-focused SaaS delivery model
+for critical Microsoft technologies. Earlier in my Microsoft tenure, I
+was product owner and PM for a highly customized SharePoint-based
+knowledge-sharing platform for Microsoft Consulting Services, leading a
+20+ person offshore development and testing team in Bangalore and
+traveling to India twice for major delivery milestones.</p>
 </section>
 <section id="earlier-roles" class="role-section" data-markdown="1">
 <h2>Earlier Roles</h2>

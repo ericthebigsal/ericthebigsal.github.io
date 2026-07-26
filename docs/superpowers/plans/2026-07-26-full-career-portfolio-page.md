@@ -723,6 +723,8 @@ git commit -m "Add Earlier Roles, AI Projects, Skills/Credentials, Resume/Contac
 cd ~/Documents/career/ericthebigsal.github.io
 pandoc portfolio.md -o /tmp/portfolio.html --standalone \
   --metadata title="Eric Salerno - Full Career Portfolio" \
+  --metadata lang=en \
+  --include-in-header=portfolio-head.html \
   --css=portfolio-style.css --embed-resources
 cp /tmp/portfolio.html portfolio.html
 ```

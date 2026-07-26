@@ -13,9 +13,9 @@ project case studies are written up in full there too.
 <a href="#about">About</a>
 <a href="#amperity">Amperity</a>
 <a href="#press-ganey">Press Ganey</a>
-<a href="#microsoft">Microsoft</a>
-<a href="#amazon">Amazon</a>
 <a href="#accolade">Accolade</a>
+<a href="#amazon">Amazon</a>
+<a href="#microsoft">Microsoft</a>
 <a href="#earlier-roles">Earlier Roles</a>
 <a href="#ai-projects">AI Portfolio Projects</a>
 <a href="#skills-credentials">Skills &amp; Credentials</a>
@@ -26,9 +26,10 @@ project case studies are written up in full there too.
 
 I'm a technical product manager who builds. I don't just own the backlog —
 I design the architecture and ship the system. Most recently, at Amperity,
-I designed and built a multi-agent RAG SDK that automates third-party API
-integration and cut development time roughly 90%, from about four weeks
-down to a couple of days.
+I designed and built a two-part AI-assisted integration system — a HITL
+discovery pipeline and a dockerized execution engine — that automates
+third-party API integration and cut development time roughly 90%, from
+about four weeks down to a couple of days.
 
 Over nearly 30 years I've gone from senior full-stack developer to
 technical product/program manager to Director and Senior Director of
@@ -56,9 +57,7 @@ Amperity is an enterprise customer-data-platform and data-activation
 company. I owned the connector and destination-activation program
 end-to-end — from customer demand intake through requirements, spec
 authoring, engineering hand-off, release tracking, and adoption
-reporting — across a ~16-month tenure (Feb 2025 – Jun 2026) that also
-included ~30 years of prior career: senior developer through
-Director/Sr. Director of Technical Program Management.
+reporting — across a ~16-month tenure (Feb 2025 – Jun 2026).
 
 ### Owning the Connector &amp; Destination Integration Program
 
@@ -287,28 +286,28 @@ insights to leadership on a recurring basis.
 
 <div class="role-section role-compact" markdown="1">
 
-## Microsoft {#microsoft}
+## Accolade {#accolade}
 
-<p class="role-meta">Senior Program Manager · Jan 2004 – Oct 2014 (two stints, with Appature in between Nov 2012 – Sep 2013) · Redmond, WA</p>
+<p class="role-meta">Director of TPM / Technical Product Manager · Mar 2017 – May 2022 · Seattle, WA — promoted from IC TPM to Director, Mar 2021</p>
 
-I led the initial API design and shipped the PlayReady DRM platform — core
-functionality and APIs for Windows 8 and Silverlight 2/3/4 — a true
-zero-to-one platform build that needed Tier-1 content-partner adoption
-against a contested standards landscape. I drove product strategy
-end-to-end (scenarios, feature specs, Sprint-based Agile delivery),
-fostered collaboration across Windows, IIS, A/V Services, and Online
-Services, engaged directly with Tier-1 and third-party partners, and
-represented PlayReady at industry standards bodies. Later, on Xbox One, I
-led the security program hardening the console's offline licensing model
-at the silicon and firmware level — security updates to the optical disc
-drive DSP, coordinated across ODD teams, silicon vendors, and firmware
-engineers, plus third-party penetration testing before launch — and led
-the launch of a security-focused SaaS delivery model for critical
-Microsoft technologies. Earlier in my Microsoft tenure, I was product
-owner and PM for a highly customized SharePoint-based knowledge-sharing
-platform for Microsoft Consulting Services, leading a 20+ person offshore
-development and testing team in Bangalore and traveling to India twice for
-major delivery milestones.
+Accolade is a personalized health-navigation company serving large
+employer clients. As an IC TPM I led the design and implementation of new
+data-ingestion infrastructure for partner feeds — member claims,
+employment data, enrollments — establishing the data-quality foundation
+later projects depended on. I then owned a multi-year migration from a
+heavily customized Microsoft Dynamics CRM to a custom in-house solution
+for Accolade's 50+ Health Assistant workforce, using a phased rollout
+(pilot → structured feedback → iterate → full scale) that improved user
+satisfaction and data accuracy without disrupting Health Assistants
+serving members day to day. When Accolade acquired 2nd.MD and PlushCare, I
+drove the program to unify Accolade's core technology and infrastructure
+with both acquired companies — data mapping, API design, HIPAA-compliant
+data security, and integration across services/data tiers, client portals,
+CRM portals, and member-facing portals. I was promoted to Director of TPM
+and led a team of 4-5 Technical Program Managers responsible for all data
+ingress and egress across the platform, building deep hands-on expertise
+across data warehouses, data lakes, CRM systems, and partner feeds to
+resolve client and partner data issues quickly.
 
 </div>
 
@@ -332,28 +331,28 @@ actual customer behavior and value.
 
 <div class="role-section role-compact" markdown="1">
 
-## Accolade {#accolade}
+## Microsoft {#microsoft}
 
-<p class="role-meta">Director of TPM / Technical Product Manager · Mar 2017 – May 2022 · Seattle, WA — promoted from IC TPM to Director, Mar 2021</p>
+<p class="role-meta">Senior Program Manager · Jan 2004 – Oct 2014 (two stints, with Appature in between Nov 2012 – Sep 2013) · Redmond, WA</p>
 
-Accolade is a personalized health-navigation company serving large
-employer clients. As an IC TPM I led the design and implementation of new
-data-ingestion infrastructure for partner feeds — member claims,
-employment data, enrollments — establishing the data-quality foundation
-later projects depended on. I then owned a multi-year migration from a
-heavily customized Microsoft Dynamics CRM to a custom in-house solution
-for Accolade's 50+ Health Assistant workforce, using a phased rollout
-(pilot → structured feedback → iterate → full scale) that improved user
-satisfaction and data accuracy without disrupting Health Assistants
-serving members day to day. When Accolade acquired 2nd.MD and PlushCare, I
-drove the program to unify Accolade's core technology and infrastructure
-with both acquired companies — data mapping, API design, HIPAA-compliant
-data security, and integration across services/data tiers, client portals,
-CRM portals, and member-facing portals. I was promoted to Director of TPM
-and led a team of 4-5 Technical Program Managers responsible for all data
-ingress and egress across the platform, building deep hands-on expertise
-across data warehouses, data lakes, CRM systems, and partner feeds to
-resolve client and partner data issues quickly.
+I led the initial API design and shipped the PlayReady DRM platform — core
+functionality and APIs for Windows 8 and Silverlight 2/3/4 — a true
+zero-to-one platform build that needed Tier-1 content-partner adoption
+against a contested standards landscape. I drove product strategy
+end-to-end (scenarios, feature specs, Sprint-based Agile delivery),
+fostered collaboration across Windows, IIS, A/V Services, and Online
+Services, engaged directly with Tier-1 and third-party partners, and
+represented PlayReady at industry standards bodies. Later, on Xbox One, I
+led the security program hardening the console's offline licensing model
+at the silicon and firmware level — security updates to the optical disc
+drive DSP, coordinated across ODD teams, silicon vendors, and firmware
+engineers, plus third-party penetration testing before launch — and led
+the launch of a security-focused SaaS delivery model for critical
+Microsoft technologies. Earlier in my Microsoft tenure, I was product
+owner and PM for a highly customized SharePoint-based knowledge-sharing
+platform for Microsoft Consulting Services, leading a 20+ person offshore
+development and testing team in Bangalore and traveling to India twice for
+major delivery milestones.
 
 </div>
 
