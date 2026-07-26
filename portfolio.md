@@ -356,3 +356,142 @@ across data warehouses, data lakes, CRM systems, and partner feeds to
 resolve client and partner data issues quickly.
 
 </div>
+
+<div class="role-section" markdown="1">
+
+## Earlier Roles {#earlier-roles}
+
+<p class="role-oneline"><strong>Appature</strong> — Technical Program Manager, Nov 2012 – Sep 2013, Seattle, WA (martech startup, acquired by IMS Health). Owned the platform APIs for a Marketing Relationship Management SaaS on AWS, used by customers, internal developers, and Customer Success; drove integration of the platform's ETL/CRUD APIs into SnapLogic's visual designer to reduce customer adoption friction.</p>
+
+<p class="role-oneline"><strong>Concur Technologies</strong> — Program Manager. Grew from individual-contributor developer to dev lead to PM; supported Fortune-500 customer engagements.</p>
+
+<p class="role-oneline"><strong>EDS / General Motors</strong> — Product Manager / Developer / Test. Early ASP web-app adopter.</p>
+
+</div>
+
+<div class="role-section" markdown="1">
+
+## AI Portfolio Projects {#ai-projects}
+
+Since mid-2026 I've been building and directing AI coding agents on a
+portfolio of from-scratch technical projects — full write-ups and code are
+linked below; this is the short version.
+
+<div class="project-summary-grid">
+
+<div class="project-summary-card" markdown="1">
+
+### Agent-Reviewed Mock Interview Tool
+
+A live interview-prep tool built with Claude Code: real answers saved
+through the browser, reviewed and reacted to by the agent in real time —
+draft/approve/feedback loop, live status updates, and a self-caught
+reviewer bias that got fixed and turned into a reusable Claude Code skill.
+
+[Case study →](agentic-qa-tool.html)
+
+</div>
+
+<div class="project-summary-card" markdown="1">
+
+### AI-Assisted Martech Integration Builder
+
+An agent ingests an OpenAPI spec, cross-references domain knowledge files
+for gotchas the spec doesn't mention, gates risky operations behind human
+review, then generates and verifies a working MCP tool server against a
+live account (Klaviyo and HubSpot).
+
+[GitHub →](https://github.com/ericthebigsal/agent-integration) ·
+[Live demo →](https://ericthebigsal.github.io/agent-integration)
+
+</div>
+
+<div class="project-summary-card" markdown="1">
+
+### RAG Pipeline, Built From Scratch
+
+A retrieval-augmented generation system with no LangChain, no LlamaIndex,
+no vector database. A custom parser chunks OpenAPI specs at the operation
+level so schema and meaning stay together — every stage, from chunking to
+prompt assembly, is visible and attributable to project code.
+
+[GitHub →](https://github.com/ericthebigsal/rag-pipeline)
+
+</div>
+
+<div class="project-summary-card" markdown="1">
+
+### judge-dread
+
+A local-first regression-testing harness for AI prompts: deterministic
+checks plus LLM-as-judge evaluation, built entirely on Gemini's free tier.
+
+[GitHub →](https://github.com/ericthebigsal/judge-dread)
+
+</div>
+
+<div class="project-summary-card" markdown="1">
+
+### nanoGPT, Trained From Scratch
+
+A character-level GPT trained from scratch on public-domain science
+fiction from Project Gutenberg, built with nanoGPT — hands-on with the
+fundamentals of how these models actually learn.
+
+[GitHub →](https://github.com/ericthebigsal/nanogpt-scifi)
+
+</div>
+
+</div>
+</div>
+
+<div class="role-section" markdown="1">
+
+## Skills &amp; Credentials {#skills-credentials}
+
+**Product / Program craft:** requirements (BRD/PRD/FSD), product discovery
+and customer interviews, prioritization, roadmapping, release management,
+stakeholder management, executive communication, process design, MBR/QBR
+reporting.
+
+**Technical:** Python, SQL (Snowflake), REST API integration and
+analysis, FastAPI, Postman/Newman, data visualization (Streamlit,
+HTML/D3), CI/CD pipelines, Git, LLM/AI tooling (MCP servers, prompt/skill
+authoring), mock-service and test-harness design, data modeling for
+analytics.
+
+**Domain:** Customer Data Platforms (CDP), marketing/advertising
+activation, data integration and connectors, identity/data onboarding,
+ad-tech and martech ecosystems (CAPI/server-side events, ESPs, ad
+networks, loyalty, messaging), healthcare data interoperability (Epic).
+
+**AI / ML (agent-directed, from-scratch, ongoing portfolio):** transformer
+and self-attention architecture, tokenization design, training loops and
+optimization, PyTorch, reproducible ML pipeline engineering, RAG
+architecture from first principles, LLM-as-judge evaluation design,
+structured-output API usage, regression-testing harness design,
+multi-agent development workflows, agentic tool design (MCP server
+generation, HITL workflows).
+
+**Education:** University of Michigan — B.S., Industrial &amp; Operations
+Engineering. Michigan Technological University — Engineering.
+
+**Certifications:** AI/ML Foundations (Neural Networks, Machine Learning,
+Thinking Machines) · Recommendation Systems with Python · Predictive
+Analytics &amp; Data Mining.
+
+</div>
+
+<div class="role-section" markdown="1">
+
+## Resume &amp; Contact {#resume-contact}
+
+<a class="pdf-download" href="portfolio.pdf">Download this page as a PDF</a>
+
+**Resume:** [Download Resume (PDF)](assets/resume/Eric-Salerno-Resume.pdf)
+
+**Contact:** [esalerno86@gmail.com](mailto:esalerno86@gmail.com) ·
+[LinkedIn](https://www.linkedin.com/in/ersalerno) ·
+[GitHub](https://github.com/ericthebigsal)
+
+</div>
