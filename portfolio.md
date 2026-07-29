@@ -441,6 +441,20 @@ fundamentals of how these models actually learn.
 
 </div>
 
+<div class="project-summary-card" markdown="1">
+
+### learnpath-agent
+
+An adaptive learning-path agent modeled on Amazon Ads Academy's real
+catalog taxonomy: an LLM plans and re-plans a personalized course
+sequence through a 54-item AI-concepts catalog based on a learner's goal
+and quiz scores, showing exactly which candidates it considered and why
+— with a deterministic fallback if the LLM call fails.
+
+[GitHub →](https://github.com/ericthebigsal/learnpath-agent)
+
+</div>
+
 </div>
 </div>
 
