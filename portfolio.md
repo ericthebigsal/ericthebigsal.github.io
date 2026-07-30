@@ -451,6 +451,7 @@ sequence through a 54-item AI-concepts catalog based on a learner's goal
 and quiz scores, showing exactly which candidates it considered and why
 — with a deterministic fallback if the LLM call fails.
 
+[Case study →](learnpath-agent-writeup.html) ·
 [GitHub →](https://github.com/ericthebigsal/learnpath-agent)
 
 </div>

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building an Adaptive Learning-Path Agent — Eric Salerno</title>
+<meta name="description" content="Case study: an adaptive learning-path agent built and reviewed in the open — candidate-set transparency, structured output, deterministic fallbacks, and the real bugs found along the way.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Building an Adaptive Learning-Path Agent">
+<meta property="og:description" content="Case study: an adaptive learning-path agent built and reviewed in the open — candidate-set transparency, structured output, deterministic fallbacks, and the real bugs found along the way.">
+<meta property="og:url" content="https://ericthebigsal.github.io/learnpath-agent-writeup.html">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* Scoped code styling — styles.css has no pre/code rules of its own. */
+  code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.88em;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+  }
+  .stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .stat-row li {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.88rem;
+    color: var(--color-muted);
+  }
+  .stat-row strong {
+    display: block;
+    font-size: 1.15rem;
+    color: var(--color-text);
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+</style>
+</head>
+<body class="case-study">
+<header class="site-header">
+  <p class="breadcrumb"><a href="index.html">&larr; Eric Salerno</a></p>
+  <h1>Building an Adaptive Learning-Path Agent</h1>
+  <p class="headline">A small LMS that plans your path, then explains — and re-plans — every step</p>
+  <p class="tagline">What started as a way to plug a named gap in an Amazon Ads Academy interview loop became a real tool with real accounts, built through three full spec&rarr;plan&rarr;review cycles and one live security audit that found things I didn't expect.</p>
+  <ul class="case-tags">
+    <li>FastAPI + SQLite</li>
+    <li>Gemini structured output</li>
+    <li>Multi-agent code review</li>
+    <li>TDD, 113 tests</li>
+    <li>bcrypt auth</li>
+  </ul>
+</header>
+
+<main>
+  <section id="why" aria-labelledby="why-heading">
+    <h2 id="why-heading">Why this exists</h2>
+    <p>I was deep in interview prep for a Senior TPM role owning Amazon Ads Academy — Amazon's real e-learning platform for advertisers. The recruiter was direct about one gap in my background: no hands-on experience with an LMS platform (Intellum, SCORM, that whole world). Rather than paper over it, I decided to build a small one myself — not to fake equivalent experience, but to actually understand the shape of the problem: a course catalog with levels and tracks, a certification model, and — the part that actually interested me — a personalization layer that adapts to how a learner is doing.</p>
+    <p>I modeled the taxonomy directly on the real Amazon Ads Academy site (I browsed the live catalog to get this right): content types (<code>course</code>, <code>learning_path</code>, <code>video</code>), three levels, tagged tracks, and a dual recognition model — certification badges for assessments, completion awards for learning paths. But instead of advertising content, I filled it with material about the exact techniques the project itself uses: RAG, multi-agent systems, LLM evaluation, context engineering, agent tooling, LLM billing. It's a small, honest joke — an LMS about AI, built by an AI, teaching you how the thing that built it works.</p>
+    <p>Then, partway through, the goalposts moved on purpose: I stopped treating it as a portfolio demo and started asking to actually use it — real accounts, real persistence, multiple tracks in parallel. That shift is most of what makes this writeup interesting.</p>
+  </section>
+
+  <section id="core-idea" aria-labelledby="core-idea-heading">
+    <h2 id="core-idea-heading">The core idea: an agent that shows its work</h2>
+    <p>The centerpiece isn't the catalog — it's the planner. Every learner gets an <strong>adaptive path</strong>: instead of routing them through one of the catalog's fixed <code>learning_path</code> bundles, an agent plans a personalized sequence from their stated goal and level, then <strong>re-plans it after every quiz</strong> — inserting remedial material on a weak score, skipping ahead on a strong one.</p>
+    <p>The part I actually cared about getting right wasn't "can an LLM pick some courses" — that's easy. It was making the agent's reasoning something a learner (or a reviewer) can actually inspect and trust, rather than a black box that occasionally does something inexplicable. Four decisions do that work:</p>
+    <ul>
+      <li><strong>The candidate set is filtered before the LLM ever sees it.</strong> A deterministic rule (substring-match the goal against track names, then level &plusmn; 1) narrows the whole catalog down to a visible shortlist first. The LLM ranks and explains <em>within</em> that shortlist — it never gets to search the entire catalog freely, so every item it could have picked is inspectable before the call even happens, and that same shortlist is rendered on the path screen as "candidates considered."</li>
+      <li><strong>Structured output, not hand-parsed text.</strong> The planner asks Gemini for a schema-validated <code>PlanResponse</code> (via <code>response_schema</code> on <code>GenerateContentConfig</code>) and reads <code>response.parsed</code> directly — never <code>json.loads</code>-ing a raw string and hoping.</li>
+      <li><strong>A deterministic fallback for when the LLM isn't available.</strong> If the API call fails, rate-limits, or returns something unusable, <code>plan_or_replan</code> catches it and falls back to a rule-based planner (sort candidates by level, then duration) — the app never has a single point of failure hanging off an external API's uptime.</li>
+      <li><strong>Hallucination guards on both sides.</strong> Even a <em>successful</em> LLM response gets its item ids checked against the real candidate set before being trusted — any id the model invents gets silently dropped, and if nothing survives, the whole response is treated as a failure and routed through the same fallback.</li>
+    </ul>
+  </section>
+
+  <section id="process" aria-labelledby="process-heading">
+    <h2 id="process-heading">How it was actually built</h2>
+    <p>I used three different levels of process rigor, matched to how structurally risky each piece of work was.</p>
+    <p><strong>The two big, structural features</strong> — the initial build (catalog, planner, five screens) and later, adding real accounts (email+password, sessions, renaming the whole "learner" concept into user-owned "tracks" so one account can run several goals in parallel) — went through the full cycle: a brainstormed design spec, a detailed TDD implementation plan, then execution where a <em>fresh subagent</em> implements each task, a separate <em>independent reviewer</em> subagent checks it against the spec before I ever look at it, a capped fix-loop for anything it finds, and a final whole-branch review — on the accounts feature, specifically a security-focused one — before anything ships.</p>
+    <p><strong>The smaller, well-scoped changes</strong> — a full visual redesign, splitting quiz questions onto their own page so you can't just scroll up to cheat, and the explainable-diff feature below — I implemented directly in the same session, still spec-first and still fully tested, just without the separate-reviewer machinery. Matching the process to the actual risk, rather than running every change through the heaviest possible gate, kept the smaller stuff fast without skipping rigor on the parts that could actually break something.</p>
+    <p>Some real numbers, because a case study without them is just vibes:</p>
+    <ul class="stat-row">
+      <li><strong>43</strong>commits</li>
+      <li><strong>24 / 7</strong>feature / fix commits</li>
+      <li><strong>113</strong>tests, 100% offline</li>
+      <li><strong>54</strong>catalog items, 7 tracks</li>
+      <li><strong>~1,000</strong>lines, core modules</li>
+    </ul>
+  </section>
+
+  <section id="moments" aria-labelledby="moments-heading">
+    <h2 id="moments-heading">Real moments from the build</h2>
+    <p>These aren't hypotheticals — every one of these is a genuine bug or false alarm found during this exact build, in the order they actually happened.</p>
+
+    <div class="moment">
+      <span class="beat">Found by an independent reviewer</span>
+      <h3>The fallback that made things worse</h3>
+      <p>The rule-based fallback planner sorted candidates by <code>item.level.value</code> — a plain string. <code>"advanced" &lt; "beginner" &lt; "intermediate"</code> alphabetically. That meant any time the real LLM call failed or rate-limited — the exact scenario the fallback exists to protect against — the app would confidently recommend <em>advanced</em> material first, to a <em>beginner</em>. It shipped, passed its own task's tests, and was caught by an independent reviewer who actually traced the sort order by hand instead of trusting that "sorted by level" meant what it said. Fixed by sorting on the level's position in an explicit ordered list instead of the string itself, with a regression test that pins the correct order.</p>
+    </div>
+
+    <div class="moment">
+      <span class="beat">Found by a manual smoke test, not the suite</span>
+      <h3>The bug the test suite could never catch</h3>
+      <p><code>google-genai</code>'s <code>Client()</code> only auto-detects a <code>GOOGLE_API_KEY</code> environment variable — not <code>GEMINI_API_KEY</code>, the name this project's own README told you to set. With no explicit key, every real API attempt raised, and the broad <code>except Exception</code> around it — there specifically so a flaky API never crashes the app — silently routed everything into the deterministic fallback with no visible error. The automated suite mocks the client everywhere, so it structurally could never catch this; it was only found by refusing to trust "the tests pass" and actually running the app with a real key.</p>
+    </div>
+
+    <div class="moment">
+      <span class="beat">Diagnosed, not "fixed"</span>
+      <h3>The false alarm that was almost a real bug</h3>
+      <p>Mid-way through the accounts feature, a live smoke test hit a genuine <code>500</code>: <code>no column named track_id</code>. The instinct is to panic and start migrating schemas. Instead: check whether a truly fresh install could ever hit this. It couldn't — the failure came from a stale, gitignored local database file left over from testing the <em>pre-accounts</em> version of the app, which <code>CREATE TABLE IF NOT EXISTS</code> correctly left untouched rather than silently corrupting. The fix was deleting one local file, not writing migration code the design had already explicitly decided wasn't needed.</p>
+    </div>
+
+    <div class="moment">
+      <span class="beat">Verified against the database directly</span>
+      <h3>When the data was right and the UI wasn't</h3>
+      <p>"I logged back in and it's like I never used the site" sounds like a data-loss bug. It wasn't — direct database inspection showed the account, the track, and the quiz progress were all exactly where they should be, and hitting the real endpoint with the user's actual session token rendered the track correctly. The actual problem: the track's title link had no underline and used ordinary body-text color, so it looked exactly like a plain heading instead of something clickable. "The data is correct" and "the product visibly works" are different claims.</p>
+    </div>
+
+    <div class="moment">
+      <span class="beat">A rendering fix became a planner change</span>
+      <h3>Teaching the agent to explain what it dropped</h3>
+      <p>A user request that sounded like a small UI tweak — "show me why a course was added or removed, and let me add a removed one back" — turned out to need a real change to the planner's contract, not just its rendering. The agent could already explain what it <em>picked</em>; it had never been asked to explain what it <em>dropped</em>. That meant extending the prompt to ask for a one-line reason per dropped item, adding a matching hallucination guard on that new field, and giving the deterministic fallback an equivalent — if more mechanical — answer, so the feature works identically whether or not the LLM is actually available that day.</p>
+    </div>
+
+    <div class="moment">
+      <span class="beat">A security-scoped final review</span>
+      <h3>A real security review, on a real auth feature</h3>
+      <p>Adding accounts meant a final review specifically scoped to auth risk: session tokens, password hashing, ownership checks, the works. It found two things worth naming. First, a reproducible bug: submitting an invalid starting level committed a track row <em>before</em> validating it, then 500'd on every future visit — a permanently broken, unremovable entry on the user's own dashboard. Second, a real product risk with no clean recovery: email wasn't normalized, so two different capitalizations of the same address could register as two different accounts, and this app deliberately has no password-reset flow. Both were verified by actually reproducing them live, not just reasoning about the code.</p>
+    </div>
+  </section>
+
+  <section id="stack" aria-labelledby="stack-heading">
+    <h2 id="stack-heading">What it's built on</h2>
+    <p>FastAPI + Jinja2, no frontend framework. SQLite (five tables: users, sessions, tracks, progress, plan history), all raw <code>sqlite3</code> with explicit connection handling — no ORM. Gemini 2.5 Flash for the planning agent, called through Google's free tier, with structured-output schema validation on every call. <code>bcrypt</code> for password hashing, hand-rolled sessions rather than a session-management library, matching the rest of the project's "minimal dependencies, understand every layer" style. A from-scratch visual identity — a literal "trail" motif (solid for the path you're on, dashed for candidates the agent considered but didn't choose) reused consistently across the path, diff, and history screens, deliberately steering away from Duolingo's game-board look toward something closer to a transit map or a course bulletin.</p>
+    <p>Building this also surfaced a real list of what would separate a portfolio demo from something that actually models improving a production Academy: a KPI/analytics view over data the app already tracks but never surfaces in aggregate; a real content-authoring pipeline instead of 54 hand-authored items; and an actual accessibility audit, since WCAG compliance is explicitly called out as a requirement for the role that inspired this project. None of that changes what's here — it's the honest list of what "production" would still cost.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p><a href="https://github.com/ericthebigsal/learnpath-agent">GitHub &rarr;</a> &middot; <a href="index.html">&larr; Back to eric salerno</a></p>
+  <p>&copy; 2026 Eric Salerno</p>
+</footer>
+</body>
+</html>
