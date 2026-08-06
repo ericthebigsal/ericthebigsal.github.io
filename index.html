@@ -13,6 +13,9 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Eric Salerno — Technical Product Manager">
 <meta name="twitter:description" content="Technical Product Manager who builds agentic AI systems, LLM orchestration, and data platforms.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -46,6 +49,7 @@
     <div class="project-grid">
       <article class="project-card">
         <h3>Agent-Reviewed Mock Interview Tool</h3>
+        <ul class="project-tags"><li>Live app</li><li>Claude Code skill</li></ul>
         <p>A live interview-prep tool built with Claude Code: real answers saved through the browser, reviewed and reacted to by the agent in real time — draft/approve/feedback loop, live status updates, and a self-caught reviewer bias that got fixed and turned into a reusable Claude Code skill.</p>
         <div class="project-links">
           <a href="agentic-qa-tool.html">Case study</a>
@@ -55,6 +59,7 @@
 
       <article class="project-card">
         <h3>AI-Assisted Martech Integration Builder</h3>
+        <ul class="project-tags"><li>Agent pipeline</li><li>MCP</li></ul>
         <p>An agent ingests an OpenAPI spec, cross-references domain knowledge files for gotchas the spec doesn't mention, gates risky operations behind human review, then generates and verifies a working MCP tool server against a live account.</p>
         <div class="project-links">
           <a href="https://github.com/ericthebigsal/agent-integration">GitHub</a>
@@ -64,6 +69,7 @@
 
       <article class="project-card">
         <h3>RAG Pipeline, Built From Scratch</h3>
+        <ul class="project-tags"><li>RAG</li><li>No framework</li></ul>
         <p>A retrieval-augmented generation system with no LangChain, no LlamaIndex, no vector database. A custom parser chunks OpenAPI specs at the operation level so schema and meaning stay together — every stage, from chunking to prompt assembly, is visible and attributable to project code.</p>
         <div class="project-links">
           <a href="https://github.com/ericthebigsal/rag-pipeline">GitHub</a>
@@ -72,6 +78,7 @@
 
       <article class="project-card">
         <h3>judge-dread</h3>
+        <ul class="project-tags"><li>Eval harness</li></ul>
         <p>A local-first regression-testing harness for AI prompts: deterministic checks plus LLM-as-judge evaluation, built entirely on Gemini's free tier.</p>
         <div class="project-links">
           <a href="https://github.com/ericthebigsal/judge-dread">GitHub</a>
@@ -80,6 +87,7 @@
 
       <article class="project-card">
         <h3>nanoGPT, Trained From Scratch</h3>
+        <ul class="project-tags"><li>Model training</li></ul>
         <p>A character-level GPT trained from scratch on public-domain science fiction from Project Gutenberg, built with nanoGPT — hands-on with the fundamentals of how these models actually learn.</p>
         <div class="project-links">
           <a href="https://github.com/ericthebigsal/nanogpt-scifi">GitHub</a>
@@ -87,8 +95,18 @@
       </article>
 
       <article class="project-card">
+        <h3>Docs-to-Course Content Pipeline</h3>
+        <ul class="project-tags"><li>Content pipeline</li><li>Multi-tenant</li></ul>
+        <p>A system that turns a company's own documentation into a reviewable course catalog: separates real lesson material from reference noise (a 1,100+ page doc site collapsed to 9 tracks, not 1,100 lessons), proposes the curriculum for human review before writing anything, then authors and validates every lesson so quizzes can't be gamed by pattern-matching. Piloted end-to-end against a real B2B SaaS company's public docs.</p>
+        <div class="project-links">
+          <a href="https://github.com/ericthebigsal/learnpath-agent">GitHub</a>
+        </div>
+      </article>
+
+      <article class="project-card">
         <h3>learnpath-agent</h3>
-        <p>An adaptive learning-path agent modeled on Amazon Ads Academy's real catalog taxonomy: an LLM plans and re-plans a personalized course sequence through a 54-item AI-concepts catalog based on a learner's goal and quiz scores, showing exactly which candidates it considered and why — with a deterministic fallback if the LLM call fails.</p>
+        <ul class="project-tags"><li>LMS</li><li>Agentic planning</li></ul>
+        <p>An adaptive learning-path agent modeled on Amazon Ads Academy's real catalog taxonomy: an LLM plans and re-plans a personalized course sequence through a 67-item AI-concepts catalog based on a learner's goal and quiz scores, showing exactly which candidates it considered and why — with a deterministic fallback if the LLM call fails.</p>
         <div class="project-links">
           <a href="learnpath-agent-writeup.html">Case study</a>
           <a href="https://github.com/ericthebigsal/learnpath-agent">GitHub</a>

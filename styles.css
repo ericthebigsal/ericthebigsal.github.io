@@ -1,12 +1,45 @@
+/* ---------------------------------------------------------------
+   Eric Salerno — personal site
+   Signature: a left-edge "review mark" on every major block —
+   project cards, case-study moments, callouts — echoing the actual
+   throughline across the work: systems that show their own review
+   trail (candidate sets considered, self-caught bias, deterministic
+   fallbacks). Mono carries structure; serif carries the narrative.
+---------------------------------------------------------------- */
+
 :root {
-  --max-width: 760px;
-  --color-bg: #fafafa;
-  --color-surface: #ffffff;
-  --color-text: #1f2933;
-  --color-muted: #52606d;
-  --color-border: #e4e7eb;
-  --color-accent: #1d4ed8;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light dark;
+
+  --max-width: 1180px;
+  --paper: #EEF0EC;
+  --surface: #FFFFFF;
+  --ink: #16181A;
+  --ink-muted: #565D58;
+  --ink-faint: #8A9089;
+  --border: #D7DBD3;
+
+  --mark: #B23A24;
+  --mark-tint: #F5E6E1;
+  --mark-border: #E4C3B7;
+
+  --font-display: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-body: "Source Serif 4", Georgia, "Iowan Old Style", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #14171A;
+    --surface: #1B1F21;
+    --ink: #EAEDE8;
+    --ink-muted: #9BA39C;
+    --ink-faint: #626963;
+    --border: #333A35;
+
+    --mark: #E0694F;
+    --mark-tint: #3A241D;
+    --mark-border: #5C3A2E;
+  }
 }
 
 * {
@@ -15,10 +48,20 @@
 
 body {
   margin: 0;
-  font-family: var(--font-sans);
-  background: var(--color-bg);
-  color: var(--color-text);
-  line-height: 1.6;
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.65;
+  font-size: 17px;
+}
+
+::selection {
+  background: var(--mark-tint);
+  color: var(--ink);
+}
+
+a {
+  color: var(--mark);
 }
 
 .site-header,
@@ -26,49 +69,85 @@ main,
 .site-footer {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 2.5rem 1.5rem;
 }
 
+/* ---------- masthead ---------- */
+
 .site-header {
-  padding-bottom: 0;
+  padding-bottom: 1.75rem;
 }
 
 .site-header h1 {
-  font-size: 2.25rem;
-  margin: 0 0 0.25rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.1rem;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem;
+  color: var(--ink);
 }
 
 .headline {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--color-accent);
-  margin: 0 0 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mark);
+  margin: 0 0 0.9rem;
 }
 
 .tagline {
-  color: var(--color-muted);
-  margin: 0 0 1rem;
-  font-size: 1.05rem;
+  font-family: var(--font-body);
+  color: var(--ink-muted);
+  margin: 0 0 1.25rem;
+  font-size: 1.15rem;
+  max-width: 46ch;
 }
 
 .portfolio-cta {
-  color: var(--color-accent);
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink);
   text-decoration: none;
-  font-weight: 600;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.45rem 0.85rem;
+  background: var(--surface);
+  transition: border-color 0.15s ease, color 0.15s ease;
 }
 
 .portfolio-cta:hover {
-  text-decoration: underline;
+  border-color: var(--mark);
+  color: var(--mark);
 }
 
+/* ---------- sections ---------- */
+
 section {
-  padding: 1.75rem 0;
-  border-top: 1px solid var(--color-border);
+  padding: 2.25rem 0;
+  border-top: 1px solid var(--border);
 }
 
 h2 {
-  font-size: 1.4rem;
-  margin: 0 0 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  margin: 0 0 1.5rem;
+}
+
+#about p {
+  font-size: 1.05rem;
+  margin: 0 0 1.1rem;
+  max-width: 62ch;
+}
+
+#about p:last-of-type {
+  margin-bottom: 1.5rem;
 }
 
 .strengths {
@@ -76,65 +155,98 @@ h2 {
   flex-wrap: wrap;
   gap: 0.5rem;
   padding: 0;
-  margin: 1rem 0 0;
+  margin: 0;
   list-style: none;
 }
 
 .strengths li {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  padding: 0.35rem 0.85rem;
-  font-size: 0.9rem;
-  color: var(--color-muted);
+  font-family: var(--font-mono);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.78rem;
+  color: var(--ink-muted);
 }
+
+/* ---------- project cards: the signature mark ---------- */
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.1rem;
 }
 
 .project-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--mark);
+  border-radius: 3px;
+  padding: 1.3rem 1.4rem;
 }
 
 .project-card h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1.1rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0 0 0.6rem;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
 }
 
 .project-card p {
+  margin: 0 0 1.1rem;
+  color: var(--ink-muted);
+  font-size: 0.96rem;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0;
   margin: 0 0 1rem;
-  color: var(--color-muted);
-  font-size: 0.95rem;
+  list-style: none;
+}
+
+.project-tags li {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mark);
+  background: var(--mark-tint);
+  border: 1px solid var(--mark-border);
+  border-radius: 3px;
+  padding: 0.15rem 0.5rem;
 }
 
 .project-links {
   display: flex;
-  gap: 1rem;
+  gap: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
 }
 
 .project-links a,
 .resume-link,
 .contact-list a {
-  color: var(--color-accent);
+  color: var(--ink);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border);
 }
 
 .project-links a:hover,
 .resume-link:hover,
 .contact-list a:hover {
-  text-decoration: underline;
+  color: var(--mark);
+  border-color: var(--mark);
 }
 
 .resume-link {
   display: inline-block;
-  font-size: 1.05rem;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
 }
 
 .contact-list {
@@ -144,17 +256,20 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
 }
 
 .site-footer {
-  padding-top: 1rem;
-  color: var(--color-muted);
-  font-size: 0.85rem;
+  padding-top: 1.5rem;
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
 }
 
 @media (max-width: 480px) {
   .site-header h1 {
-    font-size: 1.75rem;
+    font-size: 1.6rem;
   }
 
   .contact-list {
@@ -163,57 +278,79 @@ h2 {
   }
 }
 
-/* Case-study pages */
+/* ---------- Case-study pages ---------- */
 
 .breadcrumb {
-  font-size: 0.9rem;
-  margin: 0 0 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  margin: 0 0 1.25rem;
+  color: var(--ink-faint);
 }
 
 .breadcrumb a {
-  color: var(--color-accent);
+  color: var(--ink-muted);
   text-decoration: none;
+  border-bottom: 1px solid var(--border);
 }
 
 .breadcrumb a:hover {
-  text-decoration: underline;
+  color: var(--mark);
+  border-color: var(--mark);
+}
+
+.case-study h1 {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  max-width: 30ch;
+}
+
+.case-study main section p,
+.case-study main section > ul {
+  max-width: 68ch;
 }
 
 .case-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin: 0.75rem 0 0;
+  margin: 0.9rem 0 0;
   padding: 0;
   list-style: none;
 }
 
 .case-tags li {
-  font-size: 0.78rem;
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-  color: var(--color-muted);
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  padding: 0.2rem 0.7rem;
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ink-muted);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.2rem 0.6rem;
 }
 
 .case-note {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-left: 3px solid var(--color-accent);
-  border-radius: 6px;
-  padding: 0.9rem 1.1rem;
-  font-size: 0.92rem;
-  color: var(--color-muted);
-  margin: 1rem 0 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--mark);
+  border-radius: 3px;
+  padding: 0.95rem 1.15rem;
+  font-size: 0.94rem;
+  color: var(--ink-muted);
+  margin: 1.25rem 0 0;
+  max-width: 68ch;
 }
 
 .moment {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 1.25rem 1.4rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--mark);
+  border-radius: 3px;
+  padding: 1.3rem 1.5rem;
   margin: 0 0 1.1rem;
+  max-width: 68ch;
 }
 
 .moment:last-child {
@@ -221,23 +358,25 @@ h2 {
 }
 
 .moment h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
   margin: 0 0 0.5rem;
   font-size: 1.05rem;
 }
 
 .moment .beat {
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--mark);
   display: block;
-  margin: 0 0 0.35rem;
+  margin: 0 0 0.4rem;
 }
 
 .moment p {
-  margin: 0 0 0.6rem;
-  font-size: 0.95rem;
+  margin: 0 0 0.7rem;
+  font-size: 0.98rem;
 }
 
 .moment p:last-child {
@@ -245,15 +384,22 @@ h2 {
 }
 
 blockquote.pull {
-  margin: 0.8rem 0;
-  padding: 0.15rem 0 0.15rem 1rem;
-  border-left: 3px solid var(--color-accent);
-  font-size: 0.94rem;
-  color: var(--color-text);
+  margin: 0.9rem 0;
+  padding: 0.15rem 0 0.15rem 1.1rem;
+  border-left: 3px solid var(--mark);
+  font-size: 0.98rem;
+  color: var(--ink);
   font-style: italic;
+  max-width: 68ch;
 }
 
 .case-study main p,
 .case-study main li {
-  font-size: 1rem;
+  font-size: 1.02rem;
+}
+
+.case-study main h2 {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 2.5rem;
 }
