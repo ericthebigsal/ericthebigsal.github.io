@@ -456,6 +456,22 @@ and quiz scores, showing exactly which candidates it considered and why
 
 </div>
 
+<div class="project-summary-card" markdown="1">
+
+### Raspberry Pi Home Audio Platform
+
+One control surface for a six-zone home audio system — two Marantz AV
+receivers and an AudioControl multi-zone amp — running on a Raspberry Pi.
+I reverse-engineered the amplifier's undocumented HTTP/JSON control API,
+wrote the Python device layer and a FastAPI web UI, and wired a Gemini
+"systems investigator" agent into the repo: it answers a pull-request
+comment that tags it ("\@gemini") with a diagnosis and a proposed fix,
+with three-stage model failover to ride out rate limits.
+
+[GitHub →](https://github.com/ericthebigsal/Dumb-home)
+
+</div>
+
 </div>
 </div>
 
