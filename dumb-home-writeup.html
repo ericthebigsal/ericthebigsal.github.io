@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reverse-Engineering a Home Audio System — Eric Salerno</title>
+<meta name="description" content="Case study: one control surface for a six-zone home audio system — recovering an undocumented amplifier API from its own web UI, tying three protocols together, and the hardware bugs an AI coding tool got confidently wrong.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reverse-Engineering a Home Audio System">
+<meta property="og:description" content="Case study: one control surface for a six-zone home audio system — recovering an undocumented amplifier API from its own web UI, tying three protocols together, and the hardware bugs an AI coding tool got confidently wrong.">
+<meta property="og:url" content="https://ericthebigsal.github.io/dumb-home-writeup.html">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* Scoped code styling — styles.css has no pre/code rules of its own. */
+  code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.88em;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+  }
+  .stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .stat-row li {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.88rem;
+    color: var(--color-muted);
+  }
+  .stat-row strong {
+    display: block;
+    font-size: 1.15rem;
+    color: var(--color-text);
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+</style>
+</head>
+<body class="case-study">
+<header class="site-header">
+  <p class="breadcrumb"><a href="index.html">&larr; Eric Salerno</a></p>
+  <h1>Reverse-Engineering a Home Audio System</h1>
+  <p class="headline">One control surface for six zones, three devices, and three protocols that don't talk to each other</p>
+  <p class="tagline">A personal hardware project, built mostly by AI coding tools with me correcting them in the loop. The parts that held up were the ones with a clear pattern to follow; the parts that broke were every place the code needed to know something only the physical devices could tell it.</p>
+  <ul class="case-tags">
+    <li>Protocol reverse-engineering</li>
+    <li>Marantz &middot; AudioControl &middot; HEOS</li>
+    <li>FastAPI control UI</li>
+    <li>Raspberry Pi</li>
+    <li>AI-assisted build</li>
+  </ul>
+</header>
+
+<main>
+  <section id="why" aria-labelledby="why-heading">
+    <h2 id="why-heading">Why this exists</h2>
+    <p>The setup: two Marantz SR5014 AV receivers and an AudioControl M4800 four-zone amplifier, six audio zones across the house. Every device has its own web interface, and none of them know the others exist. The M4800's control API is undocumented. Streaming state — what's actually playing in a room right now — lives in a third protocol (HEOS) that neither web interface exposes cleanly. I wanted one always-on page that could see and drive every zone, running on a Raspberry Pi in the rack.</p>
+    <p>This one predates the rest of my portfolio's "hardware plus software" framing, but it's still the clearest single example of those layers meeting in one place: real consumer AV hardware, real protocol work to make it controllable, and a build process that leaned hard on AI coding tools with a human catching what they got wrong.</p>
+    <ul class="stat-row">
+      <li><strong>6</strong>zones, one page</li>
+      <li><strong>3</strong>devices</li>
+      <li><strong>3</strong>control protocols</li>
+      <li><strong>0</strong>pages of vendor API docs</li>
+    </ul>
+  </section>
+
+  <section id="reverse-engineering" aria-labelledby="re-heading">
+    <h2 id="re-heading">Recovering the M4800's API from its own web UI</h2>
+    <p>The AudioControl M4800 has a browser-based control panel but no published API. So I treated the web panel as the spec: pulled its JavaScript bundle and traced what its own controls do on the network. Underneath, it's a small JSON API:</p>
+    <ul>
+      <li><code>GET</code> / <code>POST json/operation.json</code> — device and per-zone status, and every control command</li>
+      <li><code>realTimeData.json</code>, <code>configuration.json</code>, <code>signalprocessing.json</code> — monitoring, config, and DSP state</li>
+    </ul>
+    <p>Then I wrote down the command grammar the panel posts as URL-encoded form fields: <code>outputZone_&lt;n&gt;_zonePower</code> (0/1), <code>_mute</code> (0/1), <code>_trim</code> (&minus;10&hellip;+10), and <code>_inputSource</code> (0&ndash;8, mapping to four analog channel pairs, four digital inputs, and a pink-noise generator). Once that grammar was documented, a from-scratch <code>audiocontrol_controller.py</code> could do everything the web panel could — power, volume, mute, and source routing per zone, plus temperature telemetry.</p>
+  </section>
+
+  <section id="three-protocols" aria-labelledby="tp-heading">
+    <h2 id="tp-heading">Three protocols, one surface</h2>
+    <p>Each device speaks something different, so the control layer is really three adapters behind one interface:</p>
+    <ul>
+      <li><strong>Marantz SR5014</strong> — driven through the <code>denonavr</code> library; Denon and Marantz share a control protocol, so that part was a solved problem.</li>
+      <li><strong>AudioControl M4800</strong> — the from-scratch controller built on the reverse-engineered JSON API above.</li>
+      <li><strong>HEOS</strong> — a separate TCP protocol on the Marantz receivers, used only to read "now playing" metadata that the receiver's own web UI doesn't surface.</li>
+    </ul>
+    <p>A FastAPI backend (<code>api_server.py</code>) pulls all three together behind a single dark-themed web page: power, per-zone volume/trim, mute, source routing, and temperature across all six zones. A Streamlit version came first and was replaced by the FastAPI one once the UI needed more control than Streamlit wanted to give.</p>
+  </section>
+
+  <section id="how" aria-labelledby="how-heading">
+    <h2 id="how-heading">How it was actually built</h2>
+    <p>This was a vibe-coding project, and I'll be straight about that. Most of the code was generated by AI coding tools from a running description of the hardware and what I wanted. That worked well for the parts with a clear shape — HTTP calls, a status page, form handling, wiring three controllers behind one router. It fell down in exactly the place you'd predict: anywhere the code needed a fact that only the physical devices could provide. The model would produce something that read as correct, compiled, and passed a glance — and then behaved nothing like the rack did.</p>
+    <p>The <code>SETUP_LOG.md</code> in the repo is one line long, and that's the honest artifact of this build. The real debugging didn't happen in a document — it happened live, at the rack, with me comparing raw JSON responses against what the front panels were actually showing and feeding the corrections back in.</p>
+  </section>
+
+  <section id="moments" aria-labelledby="moments-heading">
+    <h2 id="moments-heading">Real moments from the build</h2>
+    <p>Every one of these is a genuine bug found by running the thing against the actual hardware, not by reading the code.</p>
+
+    <div class="moment">
+      <span class="beat">Confident code, silent hardware</span>
+      <h3>HEOS "now playing" timed out on every zone</h3>
+      <p>The HEOS controller timed out fetching now-playing metadata — roughly two seconds per zone — so station names came back empty and the whole page took five to ten seconds to load, because it queried all six zones one after another. The generated code was structurally reasonable; it just assumed a HEOS connection that behaved the way the model expected rather than the way the receivers actually did. The fix path was a real reconnect strategy and parallel polling, not a tweak to the request.</p>
+    </div>
+
+    <div class="moment">
+      <span class="beat">The API said yes; the amp disagreed</span>
+      <h3>Every zone reported powered-on at startup</h3>
+      <p>The M4800 status read came back with all four zones showing power-on regardless of their real state, so the UI toggles started out of sync with the rack. Catching it meant reading the raw <code>operation.json</code> payload against what the amplifier's front panel actually displayed — the kind of check the code generator had no way to do.</p>
+    </div>
+
+    <div class="moment">
+      <span class="beat">Reading the wrong number</span>
+      <h3>Volume came back as 0 for every zone</h3>
+      <p>The M4800 reports level as a <code>trim</code> value in the &minus;10&hellip;+10 range. The generated code was reading a separate volume field that was always <code>0</code>, and the slider was bound to that field. Everything looked wired up; the number was just coming from the wrong key. Only visible by diffing the JSON against what the zones were doing.</p>
+    </div>
+
+    <div class="moment">
+      <span class="beat">A dependency that couldn't coexist</span>
+      <h3><code>asyncio==3.4.3</code> pinned in requirements</h3>
+      <p>The generated <code>requirements.txt</code> pinned <code>asyncio</code> as a package — a backport that conflicts with the standard library's built-in <code>asyncio</code> on any modern Python and breaks the install outright. The fix was deleting one line; nothing in the code needed it. A small thing, but a representative one: the model reached for a dependency that hadn't been necessary for years.</p>
+    </div>
+  </section>
+
+  <section id="stack" aria-labelledby="stack-heading">
+    <h2 id="stack-heading">What it's built on</h2>
+    <p>Python throughout. <code>denonavr</code> for the Marantz receivers, <code>requests</code> against the reverse-engineered M4800 JSON API, and a raw-TCP HEOS client for streaming metadata. FastAPI plus a single hand-written HTML page, no frontend framework. The reverse-engineering itself was done with <code>requests</code> and BeautifulSoup against the M4800's own web panel and its JavaScript bundle. It runs on a Raspberry Pi as an always-on service on the home network.</p>
+    <p>What would separate this from a working personal project: parallelized zone polling, since the sequential loop is the main source of latency; a real HEOS reconnect strategy instead of per-call timeouts; and device auto-discovery instead of hard-coded addresses. None of that is here — it's the honest list of what "solid" would still cost.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p><a href="index.html">&larr; Back to eric salerno</a></p>
+  <p>&copy; 2026 Eric Salerno</p>
+</footer>
+</body>
+</html>

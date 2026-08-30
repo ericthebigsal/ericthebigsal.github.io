@@ -462,13 +462,13 @@ and quiz scores, showing exactly which candidates it considered and why
 
 One control surface for a six-zone home audio system — two Marantz AV
 receivers and an AudioControl multi-zone amp — running on a Raspberry Pi.
-I reverse-engineered the amplifier's undocumented HTTP/JSON control API,
-wrote the Python device layer and a FastAPI web UI, and wired a Gemini
-"systems investigator" agent into the repo: it answers a pull-request
-comment that tags it ("\@gemini") with a diagnosis and a proposed fix,
-with three-stage model failover to ride out rate limits.
+I recovered the amplifier's undocumented HTTP/JSON control API by tracing
+its own web UI, then tied three mismatched control protocols (Marantz,
+AudioControl, HEOS) together behind a single FastAPI page. Built largely
+with AI coding tools, where the real work was the hardware bugs they got
+confidently wrong.
 
-[GitHub →](https://github.com/ericthebigsal/Dumb-home)
+[Case study →](dumb-home-writeup.html)
 
 </div>
 
